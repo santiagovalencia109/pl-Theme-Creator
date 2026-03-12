@@ -4,7 +4,28 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pico Launcher - Ultimate Creator</title>
+    <title>DS Pico Theme Creator - Theme Tool for Pico Launcher</title>
+
+    <meta name="description"
+        content="The ultimate web-based theme creator for Pico Launcher. Design Nintendo DS custom themes, convert audio to BCSTM, crop wallpapers for DS resolution, and export fully compatible themes.">
+    <meta name="keywords"
+        content="Pico Launcher, DS Theme Creator, Nintendo DS Themes, BCSTM Converter Online, DS Custom Skins, Pico Theme Generator, Homebrew Tools, BCSTM Audio Encoder">
+    <meta name="author" content="DS Pico Theme Community">
+    <meta name="robots" content="index, follow">
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="DS Pico Theme Creator - Build DS Themes Online">
+    <meta property="og:description"
+        content="Create, edit, and export custom themes for Pico Launcher directly from your browser. Features advanced BCSTM audio encoding and 15bpp image conversion.">
+    <meta property="og:image" content="ds_frame.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:title" content="Pico Launcher - Ultimate DS Theme Creator">
+    <meta property="twitter:description"
+        content="Free online tool to create professional custom themes for Pico Launcher.">
+    <meta property="twitter:image" content="ds_frame.png">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
@@ -276,42 +297,86 @@
         </div>
 
         <div id="tabCreator" class="tab-content active">
-            <h1>Ultimate Theme Creator</h1>
+            <h1>DS Pico Theme Creator for Pico Launcher</h1>
 
             <h3 style="margin-top: 10px;">1. General Settings (theme.json)</h3>
-            <div class="grid">
-                <div>
-                    <div class="form-group"><label>Theme Name:</label><input type="text" id="tName"
-                            value="My Awesome Theme"></div>
-                    <div class="form-group"><label>Author:</label><input type="text" id="tAuthor" value="Your Name">
+            <div
+                style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: #222; padding: 20px; border-radius: 8px; border: 1px solid #333;">
+
+                <!-- Text Inputs Column -->
+                <div style="display: flex; flex-direction: column; gap: 12px; justify-content: center;">
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <label style="margin: 0; width: 30%; color: #ccc;">Theme Name:</label>
+                        <input type="text" id="tName" value="My Awesome Theme"
+                            style="width: 65%; padding: 8px; margin: 0;">
                     </div>
-                    <div class="form-group"><label>Description:</label><input type="text" id="tDesc"
-                            value="An incredible theme"></div>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <label style="margin: 0; width: 30%; color: #ccc;">Author:</label>
+                        <input type="text" id="tAuthor" value="Your Name" style="width: 65%; padding: 8px; margin: 0;">
+                    </div>
+                    <div style="display: flex; align-items: center; justify-content: space-between;">
+                        <label style="margin: 0; width: 30%; color: #ccc;">Description:</label>
+                        <input type="text" id="tDesc" value="An incredible theme"
+                            style="width: 65%; padding: 8px; margin: 0;">
+                    </div>
                 </div>
-                <div>
-                    <div class="color-row"><label>MD3 Base Color:</label><input type="color" id="tColor"
-                            value="#ff2a5f"></div>
-                    <div class="checkbox-group"><input type="checkbox" id="tDark"><label for="tDark">Dark Mode</label>
+
+                <!-- Color Inputs Column -->
+                <div style="display: flex; flex-direction: column; gap: 12px;">
+                    <p style="font-size: 0.85em; color: #aaa; margin-top: 0;">I have not discovered how the base color
+                        influences the theme.</p>
+                    <div class="color-row" style="margin-bottom: 0; padding: 6px 12px;"><label style="color: #ccc;">Base
+                            Color:</label><input type="color" id="tColor" value="#ff2a5f">
+
                     </div>
-                    <div style="margin-top:20px;">
-                        <div class="color-row"><label>Menus (Unselected):</label><input type="color" id="cUnselected"
-                                value="#333333"></div>
-                        <div class="color-row"><label>Menus (Selected):</label><input type="color" id="cSelected"
-                                value="#ffffff"></div>
+                    <div
+                        style="grid-column: span 2; display: flex; justify-content: flex-end; align-items: center; padding-top: 10px; border-top: 1px dashed #444;">
+                    </div>
+                    <div class="color-row" style="margin-bottom: 0; padding: 6px 12px;"><label
+                            style="color: #ccc;">Menus (Unselected):</label><input type="color" id="cUnselected"
+                            value="#333333"></div>
+                    <div class="color-row" style="margin-bottom: 0; padding: 6px 12px;"><label
+                            style="color: #ccc;">Menus (Selected):</label><input type="color" id="cSelected"
+                            value="#ffffff"></div>
+                </div>
+
+                <!-- Footer spanning 2 columns for Dark Mode -->
+                <div
+                    style="grid-column: span 2; display: flex; justify-content: flex-end; align-items: center; padding-top: 10px; border-top: 1px dashed #444;">
+                    <div class="checkbox-group" style="margin: 0;">
+                        <input type="checkbox" id="tDark">
+                        <label for="tDark" style="margin: 0; cursor: pointer; color: #bb86fc; font-weight: bold;">Enable
+                            Dark Mode</label>
                     </div>
                 </div>
             </div>
 
-            <h3>2. Wallpapers</h3>
-            <div class="grid">
-                <div class="upload-box">
-                    <label>Upload Top Screen</label>
-                    <input type="file" id="imgTop" accept="image/*" style="margin-top: 10px;">
-                    <div class="cropper-container-wrapper" id="cropWrapTop"><img id="imageTop" src=""></div>
+            <h3>2. Wallpapers & Setup</h3>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+
+                <!-- Left Column: Uploads & Config -->
+                <div style="display: flex; flex-direction: column; gap: 20px;">
+
+                    <div class="upload-box">
+                        <label>Upload Top Screen</label>
+                        <input type="file" id="imgTop" accept="image/*" style="margin-top: 10px;">
+                        <div class="cropper-container-wrapper" id="cropWrapTop"><img id="imageTop" src=""></div>
+
+                    </div>
+
+                    <div class="upload-box">
+                        <label>Upload Bottom Screen (Touch)</label>
+                        <input type="file" id="imgBottom" accept="image/*" style="margin-top: 10px;">
+                        <div class="cropper-container-wrapper" id="cropWrapBottom"><img id="imageBottom" src=""></div>
+                    </div>
+
                 </div>
-                <div class="upload-box">
-                    <label>Preview & Overlay Box</label>
-                    <div class="overlay-controls">
+
+                <!-- Right Column: DS Preview -->
+                <div class="upload-box ds-preview-container"
+                    style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; background: #1a1a1a;">
+                    <!-- Overlay Box Config placed under Upload Top Screen -->
+                    <div class="overlay-controls" style="margin-top: 20px;">
                         <div class="checkbox-group" style="margin-top:0; margin-bottom: 15px;">
                             <input type="checkbox" id="boxEnable" checked>
                             <label for="boxEnable" style="color: #bb86fc; font-size: 1.1em;"><b>Draw Translucent
@@ -325,32 +390,50 @@
                                         id="boxBorderColor" value="#bb86fc"></div>
                             </div>
                             <label>Fill Opacity:</label> <input type="range" id="boxOpacity" min="0" max="100"
-                                value="40">
+                                value="80">
                             <label style="margin-top: 10px;">Corner Radius:</label> <input type="range" id="boxRadius"
                                 min="0" max="30" value="8">
                         </div>
                     </div>
-                    <div style="margin-top: 15px;">
-                        <canvas id="previewTopFinal" width="256" height="192"
-                            style="border: 1px solid #555; width: 100%; max-width: 256px; background: #000;"></canvas>
+
+                    <label
+                        style="color: #bb86fc; font-size: 1.2em; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">Nintendo
+                        DS
+                        Preview</label>
+
+                    <!-- DS Frame container (css variables to easily adjust positions if your png is distinct) -->
+                    <div style="position: relative; max-width: 360px; width: 100%; 
+                        --t-top: 7.5%; --t-left: 27%; --t-w: 46%; --t-h: 33%;
+                        --b-top: 58.5%; --b-left: 27%; --b-w: 46%; --b-h: 33%;">
+                        <img src="ds_frame.png" alt="DS Frame"
+                            onerror="this.src='https://via.placeholder.com/360x700/222/555?text=Nintendo+DS+Frame'"
+                            style="width: 100%; display: block; border-radius: 10px; pointer-events: none;">
+
+                        <!-- Top Screen Canvas Position -->
+                        <div
+                            style="position: absolute; top: var(--t-top); left: var(--t-left); width: var(--t-w); height: var(--t-h); border-radius: 2px; overflow: hidden; background: #000;">
+                            <canvas id="previewTopFinal" width="256" height="192"
+                                style="width: 100%; height: 100%; object-fit: fill; display: block;"></canvas>
+                        </div>
+
+                        <!-- Bottom Screen Canvas Position -->
+                        <div
+                            style="position: absolute; top: var(--b-top); left: var(--b-left); width: var(--b-w); height: var(--b-h); border-radius: 2px; overflow: hidden; background: #000;">
+                            <canvas id="previewBottomFinal" width="256" height="192"
+                                style="width: 100%; height: 100%; object-fit: fill; display: block;"></canvas>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            <div class="grid" style="margin-top: 20px;">
-                <div class="upload-box" style="grid-column: span 2;">
-                    <label>Upload Bottom Screen (Touch)</label>
-                    <input type="file" id="imgBottom" accept="image/*" style="margin-top: 10px;">
-                    <div class="cropper-container-wrapper" id="cropWrapBottom"><img id="imageBottom" src=""></div>
-                </div>
             </div>
 
             <!-- Audio Section -->
-            <h3 style="margin-top: 30px;">3. Background Music (Powered by WASM ADPCM Encoder by kazuki-4ys) </h3>
+            <h3 style="margin-top: 30px;">3. Background Music (OPTIONAL) [Encoder by kazuki-4ys] </h3>
+            <p style="font-size: 0.85em; color: #aaa; margin-top: 0;">You can also convert and download the audio
+                independently as a .bcstm file without generating a full theme.</p>
             <div class="upload-box" style="margin-bottom: 20px;">
                 <label style="color: #4ea8de; font-size: 1.1em;">Upload Audio (.mp3, .wav, .ogg)</label>
-                <!-- <p style="font-size: 0.85em; color: #aaa; margin-top: 0;">Audio will be encoded to Hardware-Safe BCSTM
-                    using <code>sound.wasm</code></p>-->
+
                 <p id="wasmStatus" style="color: #ff2a5f; font-weight: bold; font-size: 0.85em; margin: 5px 0;">Loading
                     WASM Encoder...</p>
                 <input type="file" id="audioUploader" accept="audio/*"
@@ -362,13 +445,21 @@
                     <p style="margin-top: 0; color: #bb86fc; font-weight: bold; margin-bottom: 10px;">Drag the edges to
                         trim (<span id="audioDurationText">0.00</span>s total)</p>
                     <div id="waveform"></div>
-                    <div style="display: flex; gap: 15px; margin-bottom: 15px;">
+                    <div style="display: flex; gap: 15px; margin-bottom: 15px; align-items: center;">
                         <div style="flex: 1;"><label>Start Time (Seconds):</label><input type="number" id="audioStart"
                                 value="0" min="0" step="0.01"></div>
                         <div style="flex: 1;"><label>End Time (Seconds):</label><input type="number" id="audioEnd"
                                 value="0" min="0" step="0.01"></div>
+                        <div style="flex: 0.5; display: flex; align-items: center; gap: 5px; margin-top: 15px;">
+                            <input type="checkbox" id="audioLoop" checked>
+                            <label for="audioLoop" style="margin: 0; cursor: pointer;">Loop</label>
+                        </div>
                     </div>
-                    <button id="btnPreviewAudio" class="btn-action">Play Selected Range</button>
+                    <div style="display: flex; gap: 10px;">
+                        <button id="btnPreviewAudio" class="btn-action" style="flex: 1;">Play Selected Range</button>
+                        <button id="btnDownloadAudioOnly" class="btn-action"
+                            style="flex: 1; background-color: #bb86fc; color: #000;">Download .bcstm Only</button>
+                    </div>
                 </div>
             </div>
 
@@ -377,7 +468,7 @@
 
         <!-- TAB 2: DECODER -->
         <div id="tabDecoder" class="tab-content">
-            <h1 style="color: #4ea8de;">Universal .bin Decoder</h1>
+            <h1 style="color: #4ea8de;">.bin Decoder Pico Launcher</h1>
             <div class="upload-box decoder-box">
                 <input type="file" id="binUploader" accept=".bin"
                     style="margin-top: 10px; padding: 10px; background: #22223b; border-radius: 5px; color: white;">
@@ -403,6 +494,7 @@
            ========================================= */
         let isWasmAvailable = false;
         let globalSoundParams = null;
+        let globalRawPcm16 = null;
         let resolveEncode = null;
         let rejectEncode = null;
         const wasmStatus = document.getElementById('wasmStatus');
@@ -413,7 +505,7 @@
             if (e.data.cmd === "init_result") {
                 if (e.data.result) {
                     isWasmAvailable = true;
-                    wasmStatus.innerText = "✅ WASM Encoder Ready! Hardware BCSTM Supported.";
+                    wasmStatus.innerText = "✅ WASM Encoder Ready!";
                     wasmStatus.style.color = "#4caf50";
                     audioUploader.disabled = false;
                 } else {
@@ -422,6 +514,7 @@
             } else if (e.data.cmd === "decode_result") {
                 if (e.data.result) {
                     globalSoundParams = e.data.result.soundParams;
+                    globalRawPcm16 = e.data.result.rawPcm16;
                 } else {
                     alert("Audio decode failed inside WASM Worker!");
                 }
@@ -472,7 +565,7 @@
                     if (!isTop && cropperBottom) cropperBottom.destroy();
                     let options = { aspectRatio: 256 / 192, viewMode: 1, autoCropArea: 1, background: false };
                     if (isTop) { options.crop = updateTopPreview; cropperTop = new Cropper(imgElement, options); }
-                    else { cropperBottom = new Cropper(imgElement, options); }
+                    else { options.crop = updateBottomPreview; cropperBottom = new Cropper(imgElement, options); }
                 }; reader.readAsDataURL(file);
             });
         }
@@ -498,6 +591,14 @@
             document.getElementById(id).addEventListener('input', updateTopPreview);
             document.getElementById(id).addEventListener('change', updateTopPreview);
         });
+
+        function updateBottomPreview() {
+            if (!cropperBottom) return;
+            const canvasFinal = document.getElementById('previewBottomFinal');
+            const ctx = canvasFinal.getContext('2d');
+            const cropped = cropperBottom.getCroppedCanvas({ width: 256, height: 192 });
+            ctx.clearRect(0, 0, 256, 192); ctx.drawImage(cropped, 0, 0);
+        }
 
         /* =========================================
            3. AUDIO VISUALIZER (WAVESURFER)
@@ -551,6 +652,69 @@
             if (wavesurfer.isPlaying()) wavesurfer.pause(); else if (activeRegion) activeRegion.play();
         });
 
+        document.getElementById('btnDownloadAudioOnly').addEventListener('click', async function () {
+            if (!globalSoundParams || !isWasmAvailable) return alert("Audio not loaded or encoder not ready.");
+            const btn = this;
+            const originalText = btn.innerText;
+            btn.innerText = "Encoding Audio...";
+            btn.disabled = true;
+            try {
+                const startS = parseFloat(audioStart.value);
+                const endS = parseFloat(audioEnd.value);
+                if (endS > startS) {
+                    let params = new Uint32Array(globalSoundParams);
+                    let sampleRate = params[0];
+                    let origTotalSamples = params[1];
+                    let channels = params[5] || 2;
+
+                    let startSample = Math.floor(startS * sampleRate);
+                    let endSample = Math.floor(endS * sampleRate);
+                    let totalSamples = endSample - startSample;
+
+                    let trimmedPcm16 = null;
+                    if (globalRawPcm16) {
+                        trimmedPcm16 = new Int16Array(totalSamples * channels);
+                        for (let c = 0; c < channels; c++) {
+                            let srcOffset = (c * origTotalSamples) + startSample;
+                            let dstOffset = c * totalSamples;
+                            for (let i = 0; i < totalSamples; i++) {
+                                trimmedPcm16[dstOffset + i] = globalRawPcm16[srcOffset + i];
+                            }
+                        }
+                    }
+
+                    params[1] = totalSamples;
+                    params[2] = document.getElementById('audioLoop').checked ? 1 : 0; // [2] = Loop Flag
+                    params[3] = 0; // Loop start (at the start of trimmed segment)
+                    params[4] = totalSamples; // Loop end (at the end of trimmed segment)
+                    params[6] = channels;
+
+                    const bcstmBytes = await new Promise((resolve, reject) => {
+                        resolveEncode = resolve;
+                        rejectEncode = reject;
+                        soundWorker.postMessage({ cmd: "encode", buildType: 1, soundParams: params, pcm16: trimmedPcm16 ? trimmedPcm16.buffer : null });
+                    });
+
+                    if (bcstmBytes && bcstmBytes.length > 1024) {
+                        const blob = new Blob([bcstmBytes], { type: "application/octet-stream" });
+                        const link = document.createElement("a");
+                        link.href = URL.createObjectURL(blob);
+                        link.download = "bgm.bcstm";
+                        link.click();
+                    } else {
+                        alert("⚠️ Audio encoder returned empty file. Skipping audio.");
+                    }
+                } else {
+                    alert("Invalid audio range. Start time must be less than end time.");
+                }
+            } catch (error) {
+                alert("Error encoding audio: " + error);
+            } finally {
+                btn.innerText = originalText;
+                btn.disabled = false;
+            }
+        });
+
 
 
 
@@ -568,22 +732,21 @@
                 if (data[i + 3] > 128) c16 |= (1 << 15); buffer[j] = c16 & 0xFF; buffer[j + 1] = (c16 >> 8) & 0xFF;
             } return buffer;
         }
-        function generateA3I5(c, w, h, a) {
-            offCanvas.width = w; offCanvas.height = h; offCtx.clearRect(0, 0, w, h);
-            offCtx.globalAlpha = a; offCtx.fillStyle = c; offCtx.beginPath(); offCtx.roundRect(0, 0, w, h, 8); offCtx.fill();
-            const data = offCtx.getImageData(0, 0, w, h).data, buffer = new Uint8Array(w * h);
-            for (let i = 0, p = 0; i < data.length; i += 4, p++) buffer[p] = (Math.round((data[i + 3] / 255) * 7) << 5);
-            const rgb = hexToRgb(c), pb = new Uint8Array(64), c16 = (Math.round((rgb.b / 255) * 31) << 10) | (Math.round((rgb.g / 255) * 31) << 5) | Math.round((rgb.r / 255) * 31);
-            pb[0] = c16 & 0xFF; pb[1] = (c16 >> 8) & 0xFF; return { texture: buffer, palette: pb };
-        }
-        function generateA5I3(c, w, h) {
-            offCanvas.width = w; offCanvas.height = h; offCtx.clearRect(0, 0, w, h);
-            let grad = offCtx.createLinearGradient(0, 0, 0, h); grad.addColorStop(0, c); grad.addColorStop(1, "rgba(0,0,0,0)");
-            offCtx.fillStyle = grad; offCtx.fillRect(0, 0, w, h);
-            const data = offCtx.getImageData(0, 0, w, h).data, buffer = new Uint8Array(w * h);
-            for (let i = 0, p = 0; i < data.length; i += 4, p++) buffer[p] = (Math.round((data[i + 3] / 255) * 31) << 3);
-            const rgb = hexToRgb(c), pb = new Uint8Array(64), c16 = (Math.round((rgb.b / 255) * 31) << 10) | (Math.round((rgb.g / 255) * 31) << 5) | Math.round((rgb.r / 255) * 31);
-            pb[0] = c16 & 0xFF; pb[1] = (c16 >> 8) & 0xFF; return { texture: buffer, palette: pb };
+        function generateCustomPalette(hex) {
+            const rgb = hexToRgb(hex);
+            const ramp = [0, 0, 0.04, 0.09, 0.29, 0.54, 0.80, 0.83, 0.90, 0.93, 1, 1, 1, 1, 1, 1];
+            const pb = new Uint8Array(64); // 32 colors total
+            // Indices 0-15 remain black (0x0000)
+            for (let i = 0; i < 16; i++) {
+                let r = Math.round((rgb.r / 255) * 31 * ramp[i]);
+                let g = Math.round((rgb.g / 255) * 31 * ramp[i]);
+                let b = Math.round((rgb.b / 255) * 31 * ramp[i]);
+                let c16 = (b << 10) | (g << 5) | r;
+                // We fill from index 16 to 31 (the "second row")
+                let pos = (i + 16) * 2;
+                pb[pos] = c16 & 0xFF; pb[pos + 1] = (c16 >> 8) & 0xFF;
+            }
+            return pb;
         }
 
         document.getElementById('btnGenerate').addEventListener('click', async function () {
@@ -602,15 +765,21 @@
                 zip.file("bottombg.bin", canvasTo15Bpp(cropperBottom.getCroppedCanvas({ width: 256, height: 192 })));
 
                 let cUnsel = document.getElementById('cUnselected').value, cSel = document.getElementById('cSelected').value;
-                let lU = generateA3I5(cUnsel, 256, 49, 0.4), lS = generateA3I5(cSel, 256, 49, 0.7);
-                let gU = generateA3I5(cUnsel, 64, 48, 0.4), gS = generateA3I5(cSel, 64, 48, 0.7);
-                let scr = generateA5I3("#000000", 8, 42);
 
-                zip.file("bannerListCell.bin", lU.texture); zip.file("bannerListCellPltt.bin", lU.palette);
-                zip.file("bannerListCellSelected.bin", lS.texture); zip.file("bannerListCellSelectedPltt.bin", lS.palette);
-                zip.file("gridcell.bin", gU.texture); zip.file("gridcellPltt.bin", gU.palette);
-                zip.file("gridcellSelected.bin", gS.texture); zip.file("gridcellPlttSelected.bin", gS.palette);
-                zip.file("scrim.bin", scr.texture); zip.file("scrimPltt.bin", scr.palette);
+                // Generar solo las paletas con la nueva lógica
+                zip.file("bannerListCellPltt.bin", generateCustomPalette(cUnsel));
+                zip.file("bannerListCellSelectedPltt.bin", generateCustomPalette(cSel));
+                zip.file("gridcellPltt.bin", generateCustomPalette(cUnsel));
+                zip.file("gridcellSelectedPltt.bin", generateCustomPalette(cSel));
+
+                // Tomar el resto de archivos (texturas estáticas) desde la carpeta /theme/
+                const themeAssets = ["bannerListCell.bin", "bannerListCellSelected.bin", "gridcell.bin", "gridcellSelected.bin", "scrim.bin", "scrimPltt.bin"];
+                for (const asset of themeAssets) {
+                    try {
+                        const res = await fetch(`theme/${asset}`);
+                        if (res.ok) zip.file(asset, await res.arrayBuffer());
+                    } catch (e) { console.error("Missing asset in /theme folder:", asset); }
+                }
 
                 // COMPRESIÓN BCSTM POR WASM (NATIVO ARRAYBUFFER MODO)
                 if (globalSoundParams && isWasmAvailable) {
@@ -619,16 +788,35 @@
                     if (endS > startS) {
                         let params = new Uint32Array(globalSoundParams);
                         let sampleRate = params[0];
+                        let origTotalSamples = params[1];
+                        let channels = params[5] || 2;
 
-                        params[2] = 1; // [2] = Loop Flag -> 1
-                        params[3] = Math.floor(startS * sampleRate); // Loop start
-                        params[4] = Math.floor(endS * sampleRate); // Loop end
-                        params[6] = 2; // Stereo por defecto (como en bcstm.js)
+                        let startSample = Math.floor(startS * sampleRate);
+                        let endSample = Math.floor(endS * sampleRate);
+                        let totalSamples = endSample - startSample;
+
+                        let trimmedPcm16 = null;
+                        if (globalRawPcm16) {
+                            trimmedPcm16 = new Int16Array(totalSamples * channels);
+                            for (let c = 0; c < channels; c++) {
+                                let srcOffset = (c * origTotalSamples) + startSample;
+                                let dstOffset = c * totalSamples;
+                                for (let i = 0; i < totalSamples; i++) {
+                                    trimmedPcm16[dstOffset + i] = globalRawPcm16[srcOffset + i];
+                                }
+                            }
+                        }
+
+                        params[1] = totalSamples;
+                        params[2] = document.getElementById('audioLoop').checked ? 1 : 0; // [2] = Loop Flag -> 1
+                        params[3] = 0; // Loop start
+                        params[4] = totalSamples; // Loop end
+                        params[6] = channels;
 
                         const bcstmBytes = await new Promise((resolve, reject) => {
                             resolveEncode = resolve;
                             rejectEncode = reject;
-                            soundWorker.postMessage({ cmd: "encode", buildType: 1, soundParams: params });
+                            soundWorker.postMessage({ cmd: "encode", buildType: 1, soundParams: params, pcm16: trimmedPcm16 ? trimmedPcm16.buffer : null });
                         });
 
                         if (bcstmBytes && bcstmBytes.length > 1024) {
