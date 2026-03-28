@@ -1125,7 +1125,7 @@ GitHub Repository: https://github.com/santiagovalencia109/pl-Theme-Creator/
                 else imgFile = files[i];
             }
 
-            // Si hay paleta, extraer lista de colores RGB
+            // If a palette is present, extract the RGB color list
             let paletteRgb = null;
             let numColors = 0;
             if (palFile) {
@@ -1142,7 +1142,7 @@ GitHub Repository: https://github.com/santiagovalencia109/pl-Theme-Creator/
                 }
             }
 
-            // Si subieron SOLO paleta, la visualizamos sola
+            // If ONLY a palette was uploaded, visualize it alone
             if (palFile && !imgFile) {
                 let cols = Math.min(numColors, 16), rows = Math.ceil(numColors / cols) || 1, sSize = 25;
                 decoderCanvas.width = cols * sSize; decoderCanvas.height = rows * sSize;
@@ -1157,7 +1157,7 @@ GitHub Repository: https://github.com/santiagovalencia109/pl-Theme-Creator/
                 decoderCanvas.style.display = 'block'; btnDownloadExtracted.style.display = 'inline-block'; return;
             }
 
-            // Decodificar la imagen si se subió
+            // Decode the image if it was uploaded
             if (imgFile) {
                 const fileName = imgFile.name.toLowerCase();
                 const buffer = new Uint8Array(await imgFile.arrayBuffer());
@@ -1268,7 +1268,7 @@ GitHub Repository: https://github.com/santiagovalencia109/pl-Theme-Creator/
                     const objectUrl = URL.createObjectURL(file);
                     img.onload = function () {
                         if (img.width !== expectedW || img.height !== expectedH) {
-                            alert(`Error: La imagen debe ser exactamente de ${expectedW}x${expectedH} píxeles. Esta imagen mide ${img.width}x${img.height}.`);
+                            alert(`Error: The image must be exactly ${expectedW}x${expectedH} pixels. This image is ${img.width}x${img.height}.`);
                             e.target.value = ''; // clear input
                             preview.src = '';
                             preview.style.display = 'none';
@@ -1308,7 +1308,6 @@ GitHub Repository: https://github.com/santiagovalencia109/pl-Theme-Creator/
         // Fetch latest commit hash from GitHub API
         async function fetchLastCommit() {
             try {
-                // Cambia 'Makata/devthemeds' por tu usuario/repo real si es distinto
                 const response = await fetch('https://api.github.com/repos/santiagovalencia109/pl-Theme-Creator/commits/main');
                 if (response.ok) {
                     const data = await response.json();
