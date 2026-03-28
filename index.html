@@ -620,37 +620,49 @@
         const wasmStatus = document.getElementById('wasmStatus');
         const audioUploader = document.getElementById('audioUploader');
 
-        const soundWorker = new Worker('sound/sound.js');
-        soundWorker.onmessage = function (e) {
-            if (e.data.cmd === "init_result") {
-                if (e.data.result) {
-                    isWasmAvailable = true;
-                    wasmStatus.innerText = "✅ WASM Encoder Ready!";
-                    wasmStatus.style.color = "#4caf50";
-                    audioUploader.disabled = false;
-                } else {
-                    wasmStatus.innerText = "❌ WASM Initialization failed.";
+        let soundWorker = null;
+
+        function initSoundWorker() {
+            if (soundWorker) soundWorker.terminate();
+            isWasmAvailable = false;
+            wasmStatus.innerText = "⏳ Initializing Audio Encoder...";
+            wasmStatus.style.color = "#aaa";
+
+            soundWorker = new Worker('sound/sound.js');
+            soundWorker.onmessage = function (e) {
+                if (e.data.cmd === "init_result") {
+                    if (e.data.result) {
+                        isWasmAvailable = true;
+                        wasmStatus.innerText = "✅ WASM Encoder Ready!";
+                        wasmStatus.style.color = "#4caf50";
+                        audioUploader.disabled = false;
+                    } else {
+                        wasmStatus.innerText = "❌ WASM Initialization failed.";
+                    }
+                } else if (e.data.cmd === "decode_result") {
+                    if (e.data.result) {
+                        globalSoundParams = e.data.result.soundParams;
+                        globalRawPcm16 = e.data.result.rawPcm16;
+                    } else {
+                        alert("Audio decode failed inside WASM Worker!");
+                    }
+                } else if (e.data.cmd === "encode_result") {
+                    if (resolveEncode) {
+                        if (e.data.result) resolveEncode(e.data.result);
+                        else rejectEncode("Encode failed entirely");
+                        resolveEncode = null;
+                        rejectEncode = null;
+                    }
                 }
-            } else if (e.data.cmd === "decode_result") {
-                if (e.data.result) {
-                    globalSoundParams = e.data.result.soundParams;
-                    globalRawPcm16 = e.data.result.rawPcm16;
-                } else {
-                    alert("Audio decode failed inside WASM Worker!");
-                }
-            } else if (e.data.cmd === "encode_result") {
-                if (resolveEncode) {
-                    if (e.data.result) resolveEncode(e.data.result);
-                    else rejectEncode("Encode failed entirely");
-                    resolveEncode = null;
-                    rejectEncode = null;
-                }
-            }
-        };
-        soundWorker.onerror = function () {
-            wasmStatus.innerText = "❌ Worker Error. Ensure sound.js & sound.wasm are accessible.";
-        };
-        soundWorker.postMessage({ cmd: "init" });
+            };
+            soundWorker.onerror = function () {
+                wasmStatus.innerText = "❌ Worker Error. Ensure sound.js & sound.wasm are accessible.";
+            };
+            soundWorker.postMessage({ cmd: "init" });
+        }
+
+        // Run initial init
+        initSoundWorker();
 
         /* =========================================
            2. COLOR PICKERS & CROPPER
@@ -856,6 +868,8 @@
                         link.href = URL.createObjectURL(blob);
                         link.download = "bgm.bcstm";
                         link.click();
+                        // Cleanup memory
+                        initSoundWorker();
                     } else {
                         alert("⚠️ Audio encoder returned empty file. Skipping audio.");
                     }
@@ -1172,6 +1186,12 @@ GitHub Repository: https://github.com/santiagovalencia109/pl-Theme-Creator/
                 const link = document.createElement("a"); link.href = URL.createObjectURL(content);
                 link.download = (themeNameInput.replace(/[<>:"/\\|?*]+/g, '') || "PicoTheme") + ".zip";
                 link.click();
+
+                // Cleanup & Re-init Audio Encoder to prevent memory issues on consecutive runs
+                if (isWasmAvailable) {
+                    console.log("Cleaning up WASM memory...");
+                    initSoundWorker();
+                }
             } catch (error) {
                 alert("Error generating theme: " + error);
             } finally {
