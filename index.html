@@ -5,6 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DS Pico Theme Creator - Theme Tool for Pico Launcher</title>
+    <link rel="icon" type="image/x-icon" href="images/favicon.ico">
 
     <meta name="description"
         content="The ultimate web-based theme creator for Pico Launcher. Design Nintendo DS custom themes, convert audio to BCSTM, crop wallpapers for DS resolution, and export fully compatible themes.">
@@ -18,14 +19,14 @@
     <meta property="og:title" content="DS Pico Theme Creator - Build DS Themes Online">
     <meta property="og:description"
         content="Create, edit, and export custom themes for Pico Launcher directly from your browser. Features advanced BCSTM audio encoding and 15bpp image conversion.">
-    <meta property="og:image" content="ds_frame.png">
+    <meta property="og:image" content="images/picologo.png">
 
     <!-- Twitter -->
     <meta property="twitter:card" content="summary_large_image">
     <meta property="twitter:title" content="Pico Launcher - Ultimate DS Theme Creator">
     <meta property="twitter:description"
         content="Free online tool to create professional custom themes for Pico Launcher.">
-    <meta property="twitter:image" content="ds_frame.png">
+    <meta property="twitter:image" content="images/picologo.png">
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
     <link href="https://cdnjs.cloudflare.com/ajax/libs/cropperjs/1.5.13/cropper.min.css" rel="stylesheet">
@@ -38,17 +39,19 @@
     <style>
         body {
             font-family: 'Segoe UI', sans-serif;
-            background: #121212;
+            background: linear-gradient(180deg, #020205 0%, #151233 30%, #3c24b5 70%, #7d69e4 100%);
+            background-attachment: fixed;
             color: #fff;
             margin: 0;
             padding: 20px;
             display: flex;
             flex-direction: column;
             align-items: center;
+            min-height: 100vh;
         }
 
         .container {
-            background: #1e1e1e;
+            background: #1c1c1ccc;
             padding: 0;
             border-radius: 10px;
             max-width: 950px;
@@ -82,8 +85,8 @@
         }
 
         .tab-btn.active {
-            color: #bb86fc;
-            border-bottom: 3px solid #bb86fc;
+            color: #ed1f69;
+            border-bottom: 3px solid #ed1f69;
             background: #1e1e1e;
         }
 
@@ -98,7 +101,7 @@
 
         h1 {
             text-align: center;
-            color: #bb86fc;
+            color: #ed1f69;
             margin-top: 0;
             margin-bottom: 5px;
         }
@@ -141,7 +144,7 @@
 
         input[type="range"] {
             width: 100%;
-            accent-color: #bb86fc;
+            accent-color: #ed1f69;
         }
 
         .checkbox-group {
@@ -153,7 +156,7 @@
 
         input[type="checkbox"] {
             transform: scale(1.5);
-            accent-color: #bb86fc;
+            accent-color: #ed1f69;
         }
 
         .upload-box {
@@ -181,8 +184,8 @@
         button.btn-main {
             width: 100%;
             padding: 15px;
-            background-color: #bb86fc;
-            color: #000;
+            background-color: #ed1f69;
+            color: #ffffff;
             border: none;
             border-radius: 5px;
             font-size: 18px;
@@ -285,26 +288,63 @@
             font-size: 0.9em;
             margin-top: 10px;
         }
+
+        /* Tooltip styles */
+        .tooltip {
+            position: relative;
+            display: inline-block;
+            cursor: help;
+            margin-left: 5px;
+            color: #ed1f69;
+            font-weight: bold;
+        }
+
+        .tooltip .tooltiptext {
+            visibility: hidden;
+            width: 200px;
+            background-color: #333;
+            color: #fff;
+            text-align: center;
+            border-radius: 6px;
+            padding: 8px;
+            position: absolute;
+            z-index: 1;
+            bottom: 125%;
+            left: 50%;
+            margin-left: -100px;
+            opacity: 0;
+            transition: opacity 0.3s;
+            font-size: 0.8em;
+            font-weight: normal;
+            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+            pointer-events: none;
+        }
+
+        .tooltip:hover .tooltiptext {
+            visibility: visible;
+            opacity: 1;
+        }
     </style>
 </head>
 
 <body>
-
+    <div style="text-align: center; padding: 25px 0 10px 0;">
+        <img src="images/picologo.png" alt="Pico Logo" style="max-height: 300px; display: inline-block;">
+    </div>
     <div class="container">
+
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('tabCreator')">Theme Creator</button>
             <button class="tab-btn" onclick="switchTab('tabDecoder')">.bin Decoder</button>
         </div>
 
         <div id="tabCreator" class="tab-content active">
-            <h1>DS Pico Theme Creator for Pico Launcher</h1>
-
             <h3 style="margin-top: 10px;">1. General Settings (theme.json)</h3>
             <div
-                style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; background: #222; padding: 20px; border-radius: 8px; border: 1px solid #333;">
+                style="display: flex; flex-direction: column; gap: 15px; background: #222; padding: 20px; border-radius: 8px; border: 1px solid #333;">
 
-                <!-- Text Inputs Column -->
-                <div style="display: flex; flex-direction: column; gap: 12px; justify-content: center;">
+                <!-- Row 1: Theme Name and Author -->
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
                     <div style="display: flex; align-items: center; justify-content: space-between;">
                         <label style="margin: 0; width: 30%; color: #ccc;">Theme Name:</label>
                         <input type="text" id="tName" value="My Awesome Theme"
@@ -314,39 +354,44 @@
                         <label style="margin: 0; width: 30%; color: #ccc;">Author:</label>
                         <input type="text" id="tAuthor" value="Your Name" style="width: 65%; padding: 8px; margin: 0;">
                     </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <label style="margin: 0; width: 30%; color: #ccc;">Description:</label>
-                        <input type="text" id="tDesc" value="An incredible theme"
-                            style="width: 65%; padding: 8px; margin: 0;">
-                    </div>
                 </div>
 
-                <!-- Color Inputs Column -->
-                <div style="display: flex; flex-direction: column; gap: 12px;">
-                    <p style="font-size: 0.85em; color: #aaa; margin-top: 0;">I have not discovered how the base color
-                        influences the theme.</p>
-                    <div class="color-row" style="margin-bottom: 0; padding: 6px 12px;"><label style="color: #ccc;">Base
-                            Color:</label><input type="color" id="tColor" value="#ff2a5f">
-
-                    </div>
-                    <div
-                        style="grid-column: span 2; display: flex; justify-content: flex-end; align-items: center; padding-top: 10px; border-top: 1px dashed #444;">
-                    </div>
-                    <div class="color-row" style="margin-bottom: 0; padding: 6px 12px;"><label
-                            style="color: #ccc;">Menus (Unselected):</label><input type="color" id="cUnselected"
-                            value="#333333"></div>
-                    <div class="color-row" style="margin-bottom: 0; padding: 6px 12px;"><label
-                            style="color: #ccc;">Menus (Selected):</label><input type="color" id="cSelected"
-                            value="#ffffff"></div>
+                <!-- Row 2: Description -->
+                <div style="display: flex; align-items: center; justify-content: space-between;">
+                    <label style="margin: 0; width: 14%; color: #ccc;">Description:</label>
+                    <input type="text" id="tDesc" value="An incredible theme"
+                        style="width: 83%; padding: 8px; margin: 0;">
                 </div>
 
-                <!-- Footer spanning 2 columns for Dark Mode -->
+                <!-- Row 3: All 4 selectors in a single compact row -->
                 <div
-                    style="grid-column: span 2; display: flex; justify-content: flex-end; align-items: center; padding-top: 10px; border-top: 1px dashed #444;">
-                    <div class="checkbox-group" style="margin: 0;">
+                    style="display: flex; gap: 15px; align-items: center; padding-top: 10px; border-top: 1px dashed #444;">
+                    <div class="checkbox-group" style="margin: 0; min-width: 150px;">
                         <input type="checkbox" id="tDark">
-                        <label for="tDark" style="margin: 0; cursor: pointer; color: #bb86fc; font-weight: bold;">Enable
+                        <label for="tDark"
+                            style="margin: 0; cursor: pointer; color: #ed1f69; font-weight: bold; white-space: nowrap;">Enable
                             Dark Mode</label>
+                    </div>
+
+                    <div class="color-row"
+                        style="flex: 1; margin-bottom: 0; padding: 6px 12px; justify-content: space-between;">
+                        <label style="color: #ccc; white-space: nowrap;">Base Color:
+                            <span class="tooltip">?
+                                <span class="tooltiptext">I have not discovered how the base color influences the
+                                    theme.</span>
+                            </span>
+                        </label>
+                        <input type="color" id="tColor" value="#ff2a5f">
+                    </div>
+                    <div class="color-row"
+                        style="flex: 1; margin-bottom: 0; padding: 6px 12px; justify-content: space-between;">
+                        <label style="color: #ccc; white-space: nowrap;">Menus (Unselected):</label>
+                        <input type="color" id="cUnselected" value="#333333">
+                    </div>
+                    <div class="color-row"
+                        style="flex: 1; margin-bottom: 0; padding: 6px 12px; justify-content: space-between;">
+                        <label style="color: #ccc; white-space: nowrap;">Menus (Selected):</label>
+                        <input type="color" id="cSelected" value="#ffffff">
                     </div>
                 </div>
             </div>
@@ -379,7 +424,7 @@
                     <div class="overlay-controls" style="margin-top: 20px;">
                         <div class="checkbox-group" style="margin-top:0; margin-bottom: 15px;">
                             <input type="checkbox" id="boxEnable" checked>
-                            <label for="boxEnable" style="color: #bb86fc; font-size: 1.1em;"><b>Draw Translucent
+                            <label for="boxEnable" style="color: #ed1f69; font-size: 1.1em;"><b>Draw Translucent
                                     Box</b></label>
                         </div>
                         <div id="overlaySettings">
@@ -387,7 +432,7 @@
                                 <div class="color-row" style="flex: 1;"><label>Fill:</label><input type="color"
                                         id="boxColor" value="#ffffff"></div>
                                 <div class="color-row" style="flex: 1;"><label>Border:</label><input type="color"
-                                        id="boxBorderColor" value="#bb86fc"></div>
+                                        id="boxBorderColor" value="#ed1f69"></div>
                             </div>
                             <label>Fill Opacity:</label> <input type="range" id="boxOpacity" min="0" max="100"
                                 value="80">
@@ -397,7 +442,7 @@
                     </div>
 
                     <label
-                        style="color: #bb86fc; font-size: 1.2em; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">Nintendo
+                        style="color: #ed1f69; font-size: 1.2em; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">Nintendo
                         DS
                         Preview</label>
 
@@ -405,7 +450,7 @@
                     <div style="position: relative; max-width: 360px; width: 100%; 
                         --t-top: 7.5%; --t-left: 27%; --t-w: 46%; --t-h: 33%;
                         --b-top: 58.5%; --b-left: 27%; --b-w: 46%; --b-h: 33%;">
-                        <img src="ds_frame.png" alt="DS Frame"
+                        <img src="images/ds_frame.png" alt="DS Frame"
                             onerror="this.src='https://via.placeholder.com/360x700/222/555?text=Nintendo+DS+Frame'"
                             style="width: 100%; display: block; border-radius: 10px; pointer-events: none;">
 
@@ -427,8 +472,71 @@
 
             </div>
 
+            <!-- Custom Icons Section -->
+            <h3 style="margin-top: 30px;">3. Custom Menu Icons (Grid & Banner List) (OPTIONAL)</h3>
+            <p style="font-size: 0.85em; color: #aaa; margin-top: 0;">Upload your own custom PNG icons. If left empty,
+                default
+                shapes will be used. <br> You can **<a href="templates/CustomMenusTemplates.zip"
+                    style="color: #ed1f69; text-decoration: none;">[Download these Layout Templates]</a>** as a
+                reference to create your own assets in editing software like Photoshop, GIMP, or NitroPaint.</p>
+            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
+                <div class="upload-box" style="display: flex; gap: 15px; align-items: center; text-align: left;">
+                    <div style="flex: 1;">
+                        <label>Grid Cell (Normal) (64x48)</label>
+                        <input type="file" id="imgGrid" accept="image/png"
+                            style="margin-top: 5px; width: 100%; box-sizing: border-box;">
+                        <label style="margin-top: 10px;">Grid Cell (Selected) (64x48)</label>
+                        <input type="file" id="imgGridSel" accept="image/png"
+                            style="margin-top: 5px; width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div style="width: 80px; display: flex; flex-direction: column; gap: 5px;">
+                        <div
+                            style="height: 60px; background: #1a1a1a; border: 1px dashed #555; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                            <img id="previewImgGrid"
+                                style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
+                        </div>
+                        <div
+                            style="height: 60px; background: #1a1a1a; border: 1px dashed #bbb; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                            <img id="previewImgGridSel"
+                                style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
+                        </div>
+                    </div>
+                </div>
+                <div class="upload-box" style="display: flex; gap: 15px; align-items: center; text-align: left;">
+                    <div style="flex: 1;">
+                        <label>Banner Cell (Normal) (256x49)</label>
+                        <input type="file" id="imgBanner" accept="image/png"
+                            style="margin-top: 5px; width: 100%; box-sizing: border-box;">
+                        <label style="margin-top: 10px;">Banner Cell (Selected) (256x49)</label>
+                        <input type="file" id="imgBannerSel" accept="image/png"
+                            style="margin-top: 5px; width: 100%; box-sizing: border-box;">
+                    </div>
+                    <div style="width: 120px; display: flex; flex-direction: column; gap: 5px;">
+                        <div
+                            style="height: 60px; background: #1a1a1a; border: 1px dashed #555; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                            <img id="previewImgBanner"
+                                style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
+                        </div>
+                        <div
+                            style="height: 60px; background: #1a1a1a; border: 1px dashed #bbb; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                            <img id="previewImgBannerSel"
+                                style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div style="display: flex; gap: 10px; margin-top: 15px;">
+                <button id="btnPreviewGridLayout" class="btn-action" style="flex: 1; opacity: 0.5;" disabled>Preview
+                    Grid on Bottom Screen</button>
+                <button id="btnPreviewBannerLayout" class="btn-action" style="flex: 1; opacity: 0.5;" disabled>Preview
+                    Banner on Bottom Screen</button>
+                <button id="btnClearLayout" class="btn-action" style="flex: 0.5; display: none; background: #555;">Clear
+                    Preview</button>
+            </div>
+
             <!-- Audio Section -->
-            <h3 style="margin-top: 30px;">3. Background Music (OPTIONAL) [Encoder by kazuki-4ys] </h3>
+            <h3 style="margin-top: 30px;">4. Background Music (OPTIONAL) [Encoder by kazuki-4ys] </h3>
             <p style="font-size: 0.85em; color: #aaa; margin-top: 0;">You can also convert and download the audio
                 independently as a .bcstm file without generating a full theme.</p>
             <div class="upload-box" style="margin-bottom: 20px;">
@@ -442,7 +550,7 @@
 
                 <div id="audioControls"
                     style="display: none; margin-top: 15px; text-align: left; background: #222; padding: 15px; border-radius: 5px;">
-                    <p style="margin-top: 0; color: #bb86fc; font-weight: bold; margin-bottom: 10px;">Drag the edges to
+                    <p style="margin-top: 0; color: #ed1f69; font-weight: bold; margin-bottom: 10px;">Drag the edges to
                         trim (<span id="audioDurationText">0.00</span>s total)</p>
                     <div id="waveform"></div>
                     <div style="display: flex; gap: 15px; margin-bottom: 15px; align-items: center;">
@@ -450,15 +558,11 @@
                                 value="0" min="0" step="0.01"></div>
                         <div style="flex: 1;"><label>End Time (Seconds):</label><input type="number" id="audioEnd"
                                 value="0" min="0" step="0.01"></div>
-                        <div style="flex: 0.5; display: flex; align-items: center; gap: 5px; margin-top: 15px;">
-                            <input type="checkbox" id="audioLoop" checked>
-                            <label for="audioLoop" style="margin: 0; cursor: pointer;">Loop</label>
-                        </div>
                     </div>
                     <div style="display: flex; gap: 10px;">
                         <button id="btnPreviewAudio" class="btn-action" style="flex: 1;">Play Selected Range</button>
                         <button id="btnDownloadAudioOnly" class="btn-action"
-                            style="flex: 1; background-color: #bb86fc; color: #000;">Download .bcstm Only</button>
+                            style="flex: 1; background-color: #ed1f69; color: #000;">Download .bcstm Only</button>
                     </div>
                 </div>
             </div>
@@ -466,11 +570,18 @@
             <button id="btnGenerate" class="btn-main">Generate Full Theme (.zip)</button>
         </div>
 
-        <!-- TAB 2: DECODER -->
+        <!-- TAB 3: DECODER -->
         <div id="tabDecoder" class="tab-content">
             <h1 style="color: #4ea8de;">.bin Decoder Pico Launcher</h1>
+            <p style="font-size: 0.85em; color: #aaa; margin-top: 10px; margin-bottom: 20px;">
+                To ensure that the gridcell, gridcellselected, bannerListCell, bannerListCellSelected are displayed
+                correctly with their
+                colours, you must select
+                the .bin file together with its .pltt.bin palette (use Ctrl+Click to select both). If selected on their
+                own, they will be decoded independently as masks.
+            </p>
             <div class="upload-box decoder-box">
-                <input type="file" id="binUploader" accept=".bin"
+                <input type="file" id="binUploader" accept=".bin" multiple
                     style="margin-top: 10px; padding: 10px; background: #22223b; border-radius: 5px; color: white;">
                 <p id="decoderInfo" class="decoder-info"></p>
                 <canvas id="decoderCanvas" class="checkerboard"></canvas>
@@ -544,7 +655,7 @@
 
             const pickr = Pickr.create({
                 el: container, theme: 'nano', default: input.value,
-                swatches: ['#ff2a5f', '#bb86fc', '#4ea8de', '#ffffff', '#333333', '#000000'],
+                swatches: ['#ff2a5f', '#ed1f69', '#4ea8de', '#ffffff', '#333333', '#000000'],
                 components: { preview: true, hue: true, interaction: { hex: true, input: true, save: true } },
                 i18n: { 'btn:save': 'Save' }
             });
@@ -592,12 +703,47 @@
             document.getElementById(id).addEventListener('change', updateTopPreview);
         });
 
+        let currentPreviewLayout = 'none';
+
+        const overlayBottomImg = new Image();
+        overlayBottomImg.src = 'images/overlaybuttons.png';
+        overlayBottomImg.onload = function () {
+            if (cropperBottom) updateBottomPreview();
+        };
+
         function updateBottomPreview() {
             if (!cropperBottom) return;
             const canvasFinal = document.getElementById('previewBottomFinal');
             const ctx = canvasFinal.getContext('2d');
             const cropped = cropperBottom.getCroppedCanvas({ width: 256, height: 192 });
-            ctx.clearRect(0, 0, 256, 192); ctx.drawImage(cropped, 0, 0);
+            ctx.clearRect(0, 0, 256, 192);
+            if (cropped) ctx.drawImage(cropped, 0, 0);
+
+            // Draw original top bar UI overlay
+            if (overlayBottomImg.complete && overlayBottomImg.naturalWidth > 0) {
+                ctx.drawImage(overlayBottomImg, 0, 0, 256, 33);
+            }
+
+            // Draw requested layout
+            if (currentPreviewLayout === 'grid') {
+                const imgNorm = document.getElementById('previewImgGrid');
+                const imgSel = document.getElementById('previewImgGridSel');
+                for (let r = 0; r < 3; r++) {
+                    for (let c = 0; c < 5; c++) {
+                        let xPos = 8 + (c * 48); // 8px inicial para alinearlo correcto a la línea roja
+                        if (r === 1 && c === 2) ctx.drawImage(imgSel, xPos, 40 + r * 48, 64, 48);
+                        else ctx.drawImage(imgNorm, xPos, 40 + r * 48, 64, 48);
+                    }
+                }
+            } else if (currentPreviewLayout === 'banner') {
+                const imgNorm = document.getElementById('previewImgBanner');
+                const imgSel = document.getElementById('previewImgBannerSel');
+                // 4 rows fitting 256x49
+                for (let r = 0; r < 4; r++) {
+                    if (r === 1) ctx.drawImage(imgSel, 43, -1 + r * 49, 256, 49);
+                    else ctx.drawImage(imgNorm, 43, -1 + r * 49, 256, 49);
+                }
+            }
         }
 
         /* =========================================
@@ -621,7 +767,7 @@
             reader.readAsArrayBuffer(file);
 
             if (wavesurfer) wavesurfer.destroy();
-            wavesurfer = WaveSurfer.create({ container: '#waveform', waveColor: '#4ea8de', progressColor: '#bb86fc', cursorColor: '#fff', height: 80, normalize: true, interact: false });
+            wavesurfer = WaveSurfer.create({ container: '#waveform', waveColor: '#4ea8de', progressColor: '#ed1f69', cursorColor: '#fff', height: 80, normalize: true, interact: false });
             wsRegions = wavesurfer.registerPlugin(WaveSurfer.Regions.create());
 
             wavesurfer.on('ready', () => {
@@ -684,7 +830,7 @@
                     }
 
                     params[1] = totalSamples;
-                    params[2] = document.getElementById('audioLoop').checked ? 1 : 0; // [2] = Loop Flag
+                    params[2] = 0; // [2] = Loop Flag
                     params[3] = 0; // Loop start (at the start of trimmed segment)
                     params[4] = totalSamples; // Loop end (at the end of trimmed segment)
                     params[6] = channels;
@@ -749,6 +895,66 @@
             return pb;
         }
 
+        function quantizeTo32Colors(imageData) {
+            let colorCounts = {};
+            for (let i = 0; i < imageData.data.length; i += 4) {
+                if (imageData.data[i + 3] < 10) continue;
+                let r = imageData.data[i] >> 3;
+                let g = imageData.data[i + 1] >> 3;
+                let b = imageData.data[i + 2] >> 3;
+                let key = `${r},${g},${b}`;
+                colorCounts[key] = (colorCounts[key] || 0) + 1;
+            }
+            let sortedColors = Object.keys(colorCounts).sort((a, b) => colorCounts[b] - colorCounts[a]);
+            let palette = sortedColors.slice(0, 32).map(k => {
+                let parts = k.split(',');
+                return { r: (parseInt(parts[0]) << 3), g: (parseInt(parts[1]) << 3), b: (parseInt(parts[2]) << 3) };
+            });
+            while (palette.length < 32) palette.push({ r: 0, g: 0, b: 0 });
+            return palette;
+        }
+
+        function closestColorIndex(r, g, b, palette) {
+            let minD = Infinity; let idx = 0;
+            for (let i = 0; i < 32; i++) {
+                let dr = r - palette[i].r, dg = g - palette[i].g, db = b - palette[i].b;
+                let d = dr * dr + dg * dg + db * db;
+                if (d < minD) { minD = d; idx = i; }
+            }
+            return idx;
+        }
+
+        async function processCustomIcon(fileInputId, w, h) {
+            const input = document.getElementById(fileInputId);
+            if (!input || !input.files || input.files.length === 0) return null;
+            const file = input.files[0];
+            const img = new Image();
+            img.src = URL.createObjectURL(file);
+            await new Promise(r => img.onload = r);
+
+            offCanvas.width = w; offCanvas.height = h;
+            offCtx.clearRect(0, 0, w, h);
+            offCtx.drawImage(img, 0, 0, w, h);
+            const imgData = offCtx.getImageData(0, 0, w, h);
+
+            const palette = quantizeTo32Colors(imgData);
+
+            const plttBin = new Uint8Array(64);
+            for (let i = 0; i < 32; i++) {
+                let c16 = (Math.round((palette[i].b / 255) * 31) << 10) | (Math.round((palette[i].g / 255) * 31) << 5) | Math.round((palette[i].r / 255) * 31);
+                plttBin[i * 2] = c16 & 0xFF; plttBin[i * 2 + 1] = (c16 >> 8) & 0xFF;
+            }
+
+            const imgBin = new Uint8Array(w * h);
+            for (let i = 0, p = 0; i < w * h; i++, p += 4) {
+                let alpha = Math.round((imgData.data[p + 3] / 255) * 7);
+                let idx = closestColorIndex(imgData.data[p], imgData.data[p + 1], imgData.data[p + 2], palette);
+                imgBin[i] = (alpha << 5) | idx;
+            }
+
+            return { bin: imgBin, pltt: plttBin };
+        }
+
         document.getElementById('btnGenerate').addEventListener('click', async function () {
             if (!cropperTop || !cropperBottom) return alert("Please upload both background images first.");
             const btn = this; btn.innerText = "Processing Data & Audio..."; btn.disabled = true;
@@ -766,14 +972,29 @@
 
                 let cUnsel = document.getElementById('cUnselected').value, cSel = document.getElementById('cSelected').value;
 
-                // Generar solo las paletas con la nueva lógica
-                zip.file("bannerListCellPltt.bin", generateCustomPalette(cUnsel));
-                zip.file("bannerListCellSelectedPltt.bin", generateCustomPalette(cSel));
-                zip.file("gridcellPltt.bin", generateCustomPalette(cUnsel));
-                zip.file("gridcellSelectedPltt.bin", generateCustomPalette(cSel));
+                const iconsToProcess = [
+                    { id: 'imgGrid', name: 'gridcell', w: 64, h: 48, defaultHex: cUnsel },
+                    { id: 'imgGridSel', name: 'gridcellSelected', w: 64, h: 48, defaultHex: cSel },
+                    { id: 'imgBanner', name: 'bannerListCell', w: 256, h: 49, defaultHex: cUnsel },
+                    { id: 'imgBannerSel', name: 'bannerListCellSelected', w: 256, h: 49, defaultHex: cSel }
+                ];
 
-                // Tomar el resto de archivos (texturas estáticas) desde la carpeta /theme/
-                const themeAssets = ["bannerListCell.bin", "bannerListCellSelected.bin", "gridcell.bin", "gridcellSelected.bin", "scrim.bin", "scrimPltt.bin"];
+                for (let icon of iconsToProcess) {
+                    const customData = await processCustomIcon(icon.id, icon.w, icon.h);
+                    if (customData) {
+                        zip.file(`${icon.name}.bin`, customData.bin);
+                        zip.file(`${icon.name}Pltt.bin`, customData.pltt);
+                    } else {
+                        zip.file(`${icon.name}Pltt.bin`, generateCustomPalette(icon.defaultHex));
+                        try {
+                            const res = await fetch(`theme/${icon.name}.bin`);
+                            if (res.ok) zip.file(`${icon.name}.bin`, await res.arrayBuffer());
+                        } catch (e) { console.error("Missing asset in /theme folder:", icon.name); }
+                    }
+                }
+
+                // Tomar el resto de archivos (scrim estático) desde la carpeta /theme/
+                const themeAssets = ["scrim.bin", "scrimPltt.bin"];
                 for (const asset of themeAssets) {
                     try {
                         const res = await fetch(`theme/${asset}`);
@@ -808,7 +1029,7 @@
                         }
 
                         params[1] = totalSamples;
-                        params[2] = document.getElementById('audioLoop').checked ? 1 : 0; // [2] = Loop Flag -> 1
+                        params[2] = 0; // [2] = Loop Flag -> 1
                         params[3] = 0; // Loop start
                         params[4] = totalSamples; // Loop end
                         params[6] = channels;
@@ -826,6 +1047,56 @@
                         }
                     }
                 }
+
+                const readmeContent = `==================================================
+   Generated with Pico Launcher Theme Creator     
+==================================================
+
+App URL: https://santiagovalencia109.github.io/pl-Theme-Creator/
+GitHub Repository: https://github.com/santiagovalencia109/pl-Theme-Creator/
+
+--------------------------------------------------
+[EN] HOW TO INSTALL YOUR THEME
+--------------------------------------------------
+1. Prepare the Theme Folder: 
+   Extract the downloaded .zip file into a single folder. 
+   Give that folder the name you want for your theme.
+
+2. Transfer to SD Card: 
+   Connect your SD card and navigate to /_pico/themes/. 
+   Copy and paste your theme folder into this location.
+
+3. Configure settings.json:
+   Go back to the /_pico/ root folder on your SD card.
+   Open settings.json with a text editor.
+   Find the "theme" entry and change its value to match 
+   your theme folder's name (e.g., "theme": "MyTheme").
+
+4. Launch:
+   Save the file and restart Pico Launcher to enjoy!
+
+--------------------------------------------------
+[ES] CÓMO INSTALAR TU TEMA
+--------------------------------------------------
+1. Prepara la carpeta del tema:
+   Extrae el archivo .zip descargado en una carpeta.
+   Dale a esa carpeta el nombre que quieras para tu tema.
+
+2. Transfiere a la Tarjeta SD:
+   Conecta tu tarjeta SD y ve al directorio /_pico/themes/.
+   Copia y pega la carpeta de tu tema en esta ubicación.
+
+3. Configura settings.json:
+   Regresa a la carpeta raíz /_pico/ de tu tarjeta SD.
+   Abre settings.json con un editor de texto.
+   Busca la entrada "theme" y cambia su valor para que 
+   coincida con el nombre de tu carpeta (ej: "theme": "MiTema").
+
+4. Iniciar:
+   Guarda el archivo y reinicia el Pico Launcher para disfrutar.
+
+==================================================`;
+                zip.file("CREDITS_&_INSTALL.txt", readmeContent);
 
                 const content = await zip.generateAsync({ type: "blob" });
                 const link = document.createElement("a"); link.href = URL.createObjectURL(content);
@@ -845,27 +1116,53 @@
         const decoderCtx = decoderCanvas.getContext('2d');
         const btnDownloadExtracted = document.getElementById('btnDownloadExtracted');
 
-        document.getElementById('binUploader').addEventListener('change', function (e) {
-            const file = e.target.files[0]; if (!file) return;
-            const reader = new FileReader(); const fileName = file.name.toLowerCase();
-            reader.onload = function (event) {
-                const buffer = new Uint8Array(event.target.result), size = buffer.length;
-                let w, h, formatName, imgData;
+        document.getElementById('binUploader').addEventListener('change', async function (e) {
+            const files = e.target.files; if (!files.length) return;
 
-                if (fileName.includes('pltt')) {
-                    let numColors = Math.min(256, Math.floor(size / 2));
-                    let cols = Math.min(numColors, 16), rows = Math.ceil(numColors / cols) || 1, sSize = 25;
-                    decoderCanvas.width = cols * sSize; decoderCanvas.height = rows * sSize;
-                    decoderCtx.clearRect(0, 0, decoderCanvas.width, decoderCanvas.height);
-                    for (let i = 0; i < numColors; i++) {
-                        let c16 = buffer[i * 2] | (buffer[i * 2 + 1] << 8);
-                        decoderCtx.fillStyle = `rgb(${Math.round(((c16 & 0x1F) / 31) * 255)},${Math.round((((c16 >> 5) & 0x1F) / 31) * 255)},${Math.round((((c16 >> 10) & 0x1F) / 31) * 255)})`;
-                        let x = (i % cols) * sSize, y = Math.floor(i / cols) * sSize;
-                        decoderCtx.fillRect(x, y, sSize, sSize); decoderCtx.strokeStyle = "rgba(0,0,0,0.4)"; decoderCtx.strokeRect(x, y, sSize, sSize);
-                    }
-                    document.getElementById('decoderInfo').innerText = `Detected: Palette Grid (${numColors} colors)`;
-                    decoderCanvas.style.display = 'block'; btnDownloadExtracted.style.display = 'inline-block'; return;
+            let imgFile = null, palFile = null;
+            for (let i = 0; i < files.length; i++) {
+                if (files[i].name.toLowerCase().includes('pltt')) palFile = files[i];
+                else imgFile = files[i];
+            }
+
+            // Si hay paleta, extraer lista de colores RGB
+            let paletteRgb = null;
+            let numColors = 0;
+            if (palFile) {
+                const pBuf = new Uint8Array(await palFile.arrayBuffer());
+                numColors = Math.min(256, Math.floor(pBuf.length / 2));
+                paletteRgb = [];
+                for (let i = 0; i < numColors; i++) {
+                    let c16 = pBuf[i * 2] | (pBuf[i * 2 + 1] << 8);
+                    paletteRgb.push({
+                        r: Math.round(((c16 & 0x1F) / 31) * 255),
+                        g: Math.round((((c16 >> 5) & 0x1F) / 31) * 255),
+                        b: Math.round((((c16 >> 10) & 0x1F) / 31) * 255)
+                    });
                 }
+            }
+
+            // Si subieron SOLO paleta, la visualizamos sola
+            if (palFile && !imgFile) {
+                let cols = Math.min(numColors, 16), rows = Math.ceil(numColors / cols) || 1, sSize = 25;
+                decoderCanvas.width = cols * sSize; decoderCanvas.height = rows * sSize;
+                decoderCtx.clearRect(0, 0, decoderCanvas.width, decoderCanvas.height);
+                for (let i = 0; i < numColors; i++) {
+                    let c = paletteRgb[i];
+                    decoderCtx.fillStyle = `rgb(${c.r},${c.g},${c.b})`;
+                    let x = (i % cols) * sSize, y = Math.floor(i / cols) * sSize;
+                    decoderCtx.fillRect(x, y, sSize, sSize); decoderCtx.strokeStyle = "rgba(0,0,0,0.4)"; decoderCtx.strokeRect(x, y, sSize, sSize);
+                }
+                document.getElementById('decoderInfo').innerText = `Detected: Palette Grid (${numColors} colors)`;
+                decoderCanvas.style.display = 'block'; btnDownloadExtracted.style.display = 'inline-block'; return;
+            }
+
+            // Decodificar la imagen si se subió
+            if (imgFile) {
+                const fileName = imgFile.name.toLowerCase();
+                const buffer = new Uint8Array(await imgFile.arrayBuffer());
+                const size = buffer.length;
+                let w, h, formatName, imgData;
 
                 if (fileName.includes('topbg') || fileName.includes('bottombg')) {
                     w = 256; h = 192; formatName = "Background (15bpp RGB)";
@@ -878,29 +1175,162 @@
                         }
                     }
                 } else if (fileName.includes('bannerlistcell') || fileName.includes('gridcell')) {
-                    w = fileName.includes('banner') ? 256 : 64; h = fileName.includes('banner') ? 49 : 48; formatName = "Mask (A3I5)";
+                    w = fileName.includes('banner') ? 256 : 64; h = fileName.includes('banner') ? 49 : 48; formatName = "Graphics (A3I5)";
                     decoderCanvas.width = w; decoderCanvas.height = h; imgData = decoderCtx.createImageData(w, h);
                     for (let i = 0, p = 0; i < w * h; i++, p += 4) {
-                        if (i < size) { imgData.data[p] = imgData.data[p + 1] = imgData.data[p + 2] = 255; imgData.data[p + 3] = Math.round((((buffer[i] >> 5) & 0x7) / 7) * 255); }
+                        if (i < size) {
+                            let alpha = Math.round((((buffer[i] >> 5) & 0x7) / 7) * 255);
+                            let index = buffer[i] & 0x1F;
+                            if (paletteRgb && paletteRgb[index]) {
+                                imgData.data[p] = paletteRgb[index].r; imgData.data[p + 1] = paletteRgb[index].g; imgData.data[p + 2] = paletteRgb[index].b;
+                            } else {
+                                imgData.data[p] = imgData.data[p + 1] = imgData.data[p + 2] = 255;
+                            }
+                            imgData.data[p + 3] = alpha;
+                        }
                     }
                 } else if (fileName.includes('scrim')) {
-                    w = 8; h = 42; formatName = "Shadow Mask (A5I3)";
+                    w = 8; h = 42; formatName = "Shadow (A5I3)";
                     decoderCanvas.width = w; decoderCanvas.height = h; imgData = decoderCtx.createImageData(w, h);
                     for (let i = 0, p = 0; i < w * h; i++, p += 4) {
-                        if (i < size) { imgData.data[p] = imgData.data[p + 1] = imgData.data[p + 2] = 0; imgData.data[p + 3] = Math.round((((buffer[i] >> 3) & 0x1F) / 31) * 255); }
+                        if (i < size) {
+                            let alpha = Math.round((((buffer[i] >> 3) & 0x1F) / 31) * 255);
+                            let index = buffer[i] & 0x07;
+                            if (paletteRgb && paletteRgb[index]) {
+                                imgData.data[p] = paletteRgb[index].r; imgData.data[p + 1] = paletteRgb[index].g; imgData.data[p + 2] = paletteRgb[index].b;
+                            } else {
+                                imgData.data[p] = imgData.data[p + 1] = imgData.data[p + 2] = 0;
+                            }
+                            imgData.data[p + 3] = alpha;
+                        }
                     }
                 } else return alert("File format not recognized.");
 
                 decoderCtx.putImageData(imgData, 0, 0);
-                document.getElementById('decoderInfo').innerText = `Detected: ${formatName} | Dimensions: ${w}x${h}px`;
+                let pInfo = paletteRgb ? " + Palette applied" : " (No palette, pure mask)";
+                if (fileName.includes('topbg') || fileName.includes('bottombg')) pInfo = "";
+                document.getElementById('decoderInfo').innerText = `Detected: ${formatName}${pInfo} | Dimensions: ${w}x${h}px`;
                 decoderCanvas.style.display = 'block'; btnDownloadExtracted.style.display = 'inline-block';
-            }; reader.readAsArrayBuffer(file);
+            }
         });
 
         btnDownloadExtracted.addEventListener('click', () => {
             const link = document.createElement('a'); link.download = 'Extracted_Texture.png'; link.href = decoderCanvas.toDataURL('image/png'); link.click();
         });
+
+        function updateLayoutButtonsState() {
+            const btnGrid = document.getElementById('btnPreviewGridLayout');
+            const pGridNorm = document.getElementById('previewImgGrid');
+            const pGridSel = document.getElementById('previewImgGridSel');
+            if (pGridNorm.style.display === 'block' && pGridSel.style.display === 'block') {
+                btnGrid.disabled = false;
+                btnGrid.style.opacity = '1';
+                btnGrid.innerText = 'Preview Grid on Bottom Screen';
+            } else {
+                btnGrid.disabled = true;
+                btnGrid.style.opacity = '0.5';
+                btnGrid.innerText = 'Upload Both Grid Icons';
+                if (currentPreviewLayout === 'grid') {
+                    currentPreviewLayout = 'none';
+                    document.getElementById('btnClearLayout').style.display = 'none';
+                    updateBottomPreview();
+                }
+            }
+
+            const btnBanner = document.getElementById('btnPreviewBannerLayout');
+            const pBannerNorm = document.getElementById('previewImgBanner');
+            const pBannerSel = document.getElementById('previewImgBannerSel');
+            if (pBannerNorm.style.display === 'block' && pBannerSel.style.display === 'block') {
+                btnBanner.disabled = false;
+                btnBanner.style.opacity = '1';
+                btnBanner.innerText = 'Preview Banner on Bottom Screen';
+            } else {
+                btnBanner.disabled = true;
+                btnBanner.style.opacity = '0.5';
+                btnBanner.innerText = 'Upload Both Banner Icons';
+                if (currentPreviewLayout === 'banner') {
+                    currentPreviewLayout = 'none';
+                    document.getElementById('btnClearLayout').style.display = 'none';
+                    updateBottomPreview();
+                }
+            }
+        }
+
+        ['imgGrid', 'imgGridSel', 'imgBanner', 'imgBannerSel'].forEach(id => {
+            document.getElementById(id).addEventListener('change', function (e) {
+                const file = e.target.files[0];
+                const preview = document.getElementById('previewImg' + id.substring(3));
+                const expectedW = id.includes('Grid') ? 64 : 256;
+                const expectedH = id.includes('Grid') ? 48 : 49;
+
+                if (file) {
+                    const img = new Image();
+                    const objectUrl = URL.createObjectURL(file);
+                    img.onload = function () {
+                        if (img.width !== expectedW || img.height !== expectedH) {
+                            alert(`Error: La imagen debe ser exactamente de ${expectedW}x${expectedH} píxeles. Esta imagen mide ${img.width}x${img.height}.`);
+                            e.target.value = ''; // clear input
+                            preview.src = '';
+                            preview.style.display = 'none';
+                        } else {
+                            preview.src = objectUrl;
+                            preview.style.display = 'block';
+                        }
+                        updateLayoutButtonsState();
+                    };
+                    img.src = objectUrl;
+                } else {
+                    preview.src = '';
+                    preview.style.display = 'none';
+                    updateLayoutButtonsState();
+                }
+            });
+        });
+
+        document.getElementById('btnPreviewGridLayout').addEventListener('click', () => {
+            currentPreviewLayout = 'grid';
+            document.getElementById('btnClearLayout').style.display = 'inline-block';
+            updateBottomPreview();
+        });
+
+        document.getElementById('btnPreviewBannerLayout').addEventListener('click', () => {
+            currentPreviewLayout = 'banner';
+            document.getElementById('btnClearLayout').style.display = 'inline-block';
+            updateBottomPreview();
+        });
+
+        document.getElementById('btnClearLayout').addEventListener('click', () => {
+            currentPreviewLayout = 'none';
+            document.getElementById('btnClearLayout').style.display = 'none';
+            updateBottomPreview();
+        });
+
+        // Fetch latest commit hash from GitHub API
+        async function fetchLastCommit() {
+            try {
+                // Cambia 'Makata/devthemeds' por tu usuario/repo real si es distinto
+                const response = await fetch('https://api.github.com/repos/santiagovalencia109/pl-Theme-Creator/commits/main');
+                if (response.ok) {
+                    const data = await response.json();
+                    document.getElementById('commit-hash').innerText = data.sha.substring(0, 7);
+                }
+            } catch (e) { /* Silently fail if API rate limit or offline */ }
+        }
+        fetchLastCommit();
+
     </script>
+    <footer style="text-align: center; padding: 40px 0; color: #aaa; font-size: 0.9em; line-height: 1.6;">
+        <p style="margin: 0; color: #a9b4c2;">Made with <span style="color: #ff2a5f;">❤️</span> for the Retro Gaming
+            Community</p>
+        <p style="margin: 5px 0;">
+            <a href="https://github.com/santiagovalencia109/pl-Theme-Creator/" target="_blank"
+                style="color: #ed1f69; text-decoration: none; font-weight: bold;">GitHub</a>
+            <span style="color: #555; margin: 0 8px;">•</span>
+            <a href="https://github.com/LNH-team/pico-launcher" target="_blank"
+                style="color: #ed1f69; text-decoration: none; font-weight: bold;">Pico Launcher</a>
+        </p>
+        <p style="font-size: 0.8em; color: #e6e6e6; margin: 0;">Latest commit: <span id="commit-hash">29f1f75</span></p>
+    </footer>
 </body>
 
 </html>
