@@ -480,48 +480,57 @@
                     style="color: #ed1f69; text-decoration: none;">[Download these Layout Templates]</a>** as a
                 reference to create your own assets in editing software like Photoshop, GIMP, or NitroPaint.</p>
             <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
-                <div class="upload-box" style="display: flex; gap: 15px; align-items: center; text-align: left;">
-                    <div style="flex: 1;">
-                        <label>Grid Cell (Normal) (64x48)</label>
-                        <input type="file" id="imgGrid" accept="image/png"
-                            style="margin-top: 5px; width: 100%; box-sizing: border-box;">
-                        <label style="margin-top: 10px;">Grid Cell (Selected) (64x48)</label>
-                        <input type="file" id="imgGridSel" accept="image/png"
-                            style="margin-top: 5px; width: 100%; box-sizing: border-box;">
+                <!-- Row 1: Normals -->
+                <!-- Grid Normal Box -->
+                <div class="upload-box" style="display: flex; gap: 20px; align-items: center; text-align: left;">
+                    <div style="width: 65%;">
+                        <label style="color: #ed1f69;"><b>Grid Cell:</b> Unselected (64x48)</label>
+                        <input type="file" id="imgGrid" accept="image/png" style="width: 100%; margin-top: 5px;">
                     </div>
-                    <div style="width: 80px; display: flex; flex-direction: column; gap: 5px;">
-                        <div
-                            style="height: 60px; background: #1a1a1a; border: 1px dashed #555; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                            <img id="previewImgGrid"
-                                style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
-                        </div>
-                        <div
-                            style="height: 60px; background: #1a1a1a; border: 1px dashed #bbb; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                            <img id="previewImgGridSel"
-                                style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
-                        </div>
+                    <div
+                        style="flex: 1; height: 60px; background: #1a1a1a; border: 1px dashed #555; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                        <img id="previewImgGrid"
+                            style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
                     </div>
                 </div>
-                <div class="upload-box" style="display: flex; gap: 15px; align-items: center; text-align: left;">
-                    <div style="flex: 1;">
-                        <label>Banner Cell (Normal) (256x49)</label>
-                        <input type="file" id="imgBanner" accept="image/png"
-                            style="margin-top: 5px; width: 100%; box-sizing: border-box;">
-                        <label style="margin-top: 10px;">Banner Cell (Selected) (256x49)</label>
-                        <input type="file" id="imgBannerSel" accept="image/png"
-                            style="margin-top: 5px; width: 100%; box-sizing: border-box;">
+
+                <!-- Banner Normal Box -->
+                <div class="upload-box" style="display: flex; gap: 20px; align-items: center; text-align: left;">
+                    <div style="width: 65%;">
+                        <label style="color: #ed1f69;"><b>Banner Cell:</b> Unselected (256x49)</label>
+                        <input type="file" id="imgBanner" accept="image/png" style="width: 100%; margin-top: 5px;">
                     </div>
-                    <div style="width: 120px; display: flex; flex-direction: column; gap: 5px;">
-                        <div
-                            style="height: 60px; background: #1a1a1a; border: 1px dashed #555; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                            <img id="previewImgBanner"
-                                style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
-                        </div>
-                        <div
-                            style="height: 60px; background: #1a1a1a; border: 1px dashed #bbb; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                            <img id="previewImgBannerSel"
-                                style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
-                        </div>
+                    <div
+                        style="flex: 1; height: 60px; background: #1a1a1a; border: 1px dashed #555; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                        <img id="previewImgBanner"
+                            style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
+                    </div>
+                </div>
+
+                <!-- Row 2: Selecteds -->
+                <!-- Grid Selected Box -->
+                <div class="upload-box" style="display: flex; gap: 20px; align-items: center; text-align: left;">
+                    <div style="width: 65%;">
+                        <label style="color: #ed1f69;"><b>Grid Cell:</b> Selected (64x48)</label>
+                        <input type="file" id="imgGridSel" accept="image/png" style="width: 100%; margin-top: 5px;">
+                    </div>
+                    <div
+                        style="flex: 1; height: 60px; background: #1a1a1a; border: 1px dashed #bbb; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                        <img id="previewImgGridSel"
+                            style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
+                    </div>
+                </div>
+
+                <!-- Banner Selected Box -->
+                <div class="upload-box" style="display: flex; gap: 20px; align-items: center; text-align: left;">
+                    <div style="width: 65%;">
+                        <label style="color: #ed1f69;"><b>Banner Cell:</b> Selected (256x49)</label>
+                        <input type="file" id="imgBannerSel" accept="image/png" style="width: 100%; margin-top: 5px;">
+                    </div>
+                    <div
+                        style="flex: 1; height: 60px; background: #1a1a1a; border: 1px dashed #bbb; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
+                        <img id="previewImgBannerSel"
+                            style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
                     </div>
                 </div>
             </div>
@@ -572,7 +581,7 @@
 
         <!-- TAB 3: DECODER -->
         <div id="tabDecoder" class="tab-content">
-            <h1 style="color: #4ea8de;">.bin Decoder Pico Launcher</h1>
+            <h1 style="color: #4ea8de;">.bin Theme Decoder</h1>
             <p style="font-size: 0.85em; color: #aaa; margin-top: 10px; margin-bottom: 20px;">
                 To ensure that the gridcell, gridcellselected, bannerListCell, bannerListCellSelected are displayed
                 correctly with their
@@ -1048,6 +1057,67 @@
                     }
                 }
 
+                // === GENERATE SCREENSHOTS ===
+                const screenshotCanvas = document.createElement('canvas'); // Reuse this
+                const ssCtx = screenshotCanvas.getContext('2d');
+
+                // Helper to capture current combined view (Top + Bottom + Branding Footer)
+                const captureFullLayout = async (name) => {
+                    screenshotCanvas.width = 256;
+                    screenshotCanvas.height = 192 * 2 + 42; // 384 (Screens) + 42 (Branding Footer)
+
+                    // Background
+                    ssCtx.fillStyle = "#000";
+                    ssCtx.fillRect(0, 0, 256, screenshotCanvas.height);
+
+                    // Draw screens (NO GAP)
+                    ssCtx.drawImage(document.getElementById('previewTopFinal'), 0, 0);
+                    ssCtx.drawImage(document.getElementById('previewBottomFinal'), 0, 192);
+
+                    // Footer Branding Area
+                    ssCtx.fillStyle = "#111";
+                    ssCtx.fillRect(0, 384, 256, 42);
+
+                    // Branding Text
+                    ssCtx.fillStyle = "#ffffff";
+                    ssCtx.font = "bold 11px 'Segoe UI', Arial, sans-serif";
+                    ssCtx.textAlign = "center";
+                    ssCtx.fillText("Made with Pico Theme Creator", 128, 404);
+
+                    ssCtx.fillStyle = "#ed1f69";
+                    ssCtx.font = "9px 'Segoe UI', Arial, sans-serif";
+                    ssCtx.fillText("https://github.com/santiagovalencia109/pl-Theme-Creator/", 128, 417);
+
+                    const blob = await new Promise(r => screenshotCanvas.toBlob(r, 'image/png'));
+                    zip.file(name, blob);
+                };
+
+                // Preserve current layout state to restore later
+                const originalLayout = currentPreviewLayout;
+
+                // 1. Theme Screenshot (Base Theme - No icons overlay)
+                currentPreviewLayout = 'none';
+                updateBottomPreview();
+                await captureFullLayout("themescreenshot.png");
+
+                // 2. Grid Layout Screenshot (if icons exist)
+                if (document.getElementById('previewImgGrid').style.display === 'block') {
+                    currentPreviewLayout = 'grid';
+                    updateBottomPreview();
+                    await captureFullLayout("gridscreenshot.png");
+                }
+
+                // 3. Banner Layout Screenshot (if icons exist)
+                if (document.getElementById('previewImgBanner').style.display === 'block') {
+                    currentPreviewLayout = 'banner';
+                    updateBottomPreview();
+                    await captureFullLayout("bannerscreenshot.png");
+                }
+
+                // Restore original preview state
+                currentPreviewLayout = originalLayout;
+                updateBottomPreview();
+
                 const readmeContent = `==================================================
    Generated with Pico Launcher Theme Creator     
 ==================================================
@@ -1116,6 +1186,8 @@ GitHub Repository: https://github.com/santiagovalencia109/pl-Theme-Creator/
         const decoderCtx = decoderCanvas.getContext('2d');
         const btnDownloadExtracted = document.getElementById('btnDownloadExtracted');
 
+        let currentDecodedFileName = 'Extracted_Texture.png';
+
         document.getElementById('binUploader').addEventListener('change', async function (e) {
             const files = e.target.files; if (!files.length) return;
 
@@ -1123,6 +1195,12 @@ GitHub Repository: https://github.com/santiagovalencia109/pl-Theme-Creator/
             for (let i = 0; i < files.length; i++) {
                 if (files[i].name.toLowerCase().includes('pltt')) palFile = files[i];
                 else imgFile = files[i];
+            }
+
+            // Set global filename for download
+            const baseFile = imgFile || palFile;
+            if (baseFile) {
+                currentDecodedFileName = baseFile.name.split('.')[0] + '.png';
             }
 
             // If a palette is present, extract the RGB color list
@@ -1215,7 +1293,10 @@ GitHub Repository: https://github.com/santiagovalencia109/pl-Theme-Creator/
         });
 
         btnDownloadExtracted.addEventListener('click', () => {
-            const link = document.createElement('a'); link.download = 'Extracted_Texture.png'; link.href = decoderCanvas.toDataURL('image/png'); link.click();
+            const link = document.createElement('a');
+            link.download = currentDecodedFileName;
+            link.href = decoderCanvas.toDataURL('image/png');
+            link.click();
         });
 
         function updateLayoutButtonsState() {
@@ -1317,6 +1398,49 @@ GitHub Repository: https://github.com/santiagovalencia109/pl-Theme-Creator/
         }
         fetchLastCommit();
 
+        /* =========================================
+           7. DRAG AND DROP FUNCTIONALITY
+           ========================================= */
+        document.querySelectorAll('.upload-box, .upload-item, input[type="file"]').forEach(zone => {
+            zone.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                if (zone.classList.contains('upload-item')) {
+                    zone.style.background = 'rgba(237, 31, 105, 0.2)';
+                    zone.style.borderRadius = '8px';
+                } else {
+                    zone.style.borderColor = '#ed1f69';
+                    zone.style.background = '#32223b';
+                }
+            });
+            zone.addEventListener('dragleave', (e) => {
+                e.stopPropagation();
+                zone.style.borderColor = '';
+                zone.style.background = '';
+            });
+            zone.addEventListener('drop', (e) => {
+                e.preventDefault();
+                e.stopPropagation();
+                zone.style.borderColor = '';
+                zone.style.background = '';
+
+                const files = e.dataTransfer.files;
+                if (files.length > 0) {
+                    let targetInput = (zone.tagName === 'INPUT' && zone.type === 'file') ? zone : zone.querySelector('input[type="file"]');
+
+                    if (targetInput) {
+                        const dt = new DataTransfer();
+                        for (let i = 0; i < files.length; i++) {
+                            dt.items.add(files[i]);
+                            // If input is NOT 'multiple', only process the first file
+                            if (!targetInput.multiple) break;
+                        }
+                        targetInput.files = dt.files;
+                        targetInput.dispatchEvent(new Event('change'));
+                    }
+                }
+            });
+        });
     </script>
     <footer style="text-align: center; padding: 40px 0; color: #aaa; font-size: 0.9em; line-height: 1.6;">
         <p style="margin: 0; color: #a9b4c2;">Made with <span style="color: #ff2a5f;">❤️</span> for the Retro Gaming
