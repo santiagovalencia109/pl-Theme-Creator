@@ -35,296 +35,9 @@
     <script src="https://cdn.jsdelivr.net/npm/@simonwep/pickr/dist/pickr.min.js"></script>
     <script src="https://unpkg.com/wavesurfer.js@7.5.0/dist/wavesurfer.min.js"></script>
     <script src="https://unpkg.com/wavesurfer.js@7.5.0/dist/plugins/regions.min.js"></script>
-
-    <style>
-        body {
-            font-family: 'Segoe UI', sans-serif;
-            background: linear-gradient(180deg, #020205 0%, #151233 30%, #3c24b5 70%, #7d69e4 100%);
-            background-attachment: fixed;
-            color: #fff;
-            margin: 0;
-            padding: 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            min-height: 100vh;
-        }
-
-        .container {
-            background: #1c1c1ccc;
-            padding: 0;
-            border-radius: 10px;
-            max-width: 950px;
-            width: 100%;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-            overflow: hidden;
-        }
-
-        .tabs {
-            display: flex;
-            background: #151515;
-            border-bottom: 2px solid #333;
-        }
-
-        .tab-btn {
-            flex: 1;
-            padding: 15px;
-            text-align: center;
-            cursor: pointer;
-            background: transparent;
-            color: #888;
-            border: none;
-            font-size: 16px;
-            font-weight: bold;
-            transition: 0.3s;
-        }
-
-        .tab-btn:hover {
-            background: #1a1a1a;
-            color: #fff;
-        }
-
-        .tab-btn.active {
-            color: #ed1f69;
-            border-bottom: 3px solid #ed1f69;
-            background: #1e1e1e;
-        }
-
-        .tab-content {
-            display: none;
-            padding: 30px;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
-
-        h1 {
-            text-align: center;
-            color: #ed1f69;
-            margin-top: 0;
-            margin-bottom: 5px;
-        }
-
-        h3 {
-            border-bottom: 1px solid #333;
-            padding-bottom: 5px;
-            color: #aaa;
-            margin-top: 30px;
-        }
-
-        .grid {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 20px;
-        }
-
-        .form-group {
-            margin-bottom: 15px;
-        }
-
-        label {
-            display: block;
-            margin-bottom: 5px;
-            font-weight: bold;
-            font-size: 0.9em;
-            color: #ccc;
-        }
-
-        input[type="text"],
-        input[type="number"] {
-            width: 100%;
-            padding: 10px;
-            border-radius: 5px;
-            border: 1px solid #333;
-            background: #2c2c2c;
-            color: white;
-            box-sizing: border-box;
-        }
-
-        input[type="range"] {
-            width: 100%;
-            accent-color: #ed1f69;
-        }
-
-        .checkbox-group {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            margin-top: 10px;
-        }
-
-        input[type="checkbox"] {
-            transform: scale(1.5);
-            accent-color: #ed1f69;
-        }
-
-        .upload-box {
-            background: #2c2c2c;
-            padding: 15px;
-            border-radius: 8px;
-            border: 1px dashed #555;
-            text-align: center;
-        }
-
-        .cropper-container-wrapper {
-            max-width: 100%;
-            height: 250px;
-            margin-top: 10px;
-            display: none;
-            background: #000;
-        }
-
-        img {
-            max-width: 100%;
-            display: block;
-            margin: 0 auto;
-        }
-
-        button.btn-main {
-            width: 100%;
-            padding: 15px;
-            background-color: #ed1f69;
-            color: #ffffff;
-            border: none;
-            border-radius: 5px;
-            font-size: 18px;
-            cursor: pointer;
-            font-weight: bold;
-            transition: background 0.3s;
-            margin-top: 30px;
-        }
-
-        button.btn-main:hover {
-            background-color: #9965f4;
-        }
-
-        button.btn-main:disabled {
-            background-color: #555;
-            cursor: not-allowed;
-        }
-
-        .btn-action {
-            padding: 10px;
-            font-size: 14px;
-            background-color: #4ea8de;
-            color: black;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-            font-weight: bold;
-            width: 100%;
-            transition: background 0.3s;
-        }
-
-        .btn-action:hover {
-            background-color: #3b8ac4;
-        }
-
-        .overlay-controls {
-            background: #222;
-            border: 1px solid #444;
-            padding: 15px;
-            border-radius: 5px;
-            margin-top: 10px;
-            text-align: left;
-            font-size: 0.85em;
-        }
-
-        .overlay-controls label {
-            font-size: 1em;
-            display: inline-block;
-            margin-top: 5px;
-        }
-
-        .color-row {
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            margin-bottom: 10px;
-            background: #2c2c2c;
-            padding: 8px 12px;
-            border-radius: 5px;
-            border: 1px solid #333;
-        }
-
-        .color-row label {
-            margin: 0;
-        }
-
-        .pickr-container {
-            display: inline-block;
-        }
-
-        #waveform {
-            margin-bottom: 15px;
-            border-radius: 5px;
-            overflow: hidden;
-            background: #111;
-            border: 1px solid #444;
-            position: relative;
-        }
-
-        .decoder-box {
-            background: #1a1a2e;
-            border-color: #4a4e69;
-            padding: 30px;
-        }
-
-        .checkerboard {
-            background-color: #1a1a1a;
-            background-image: linear-gradient(45deg, #2a2a2a 25%, transparent 25%, transparent 75%, #2a2a2a 75%, #2a2a2a), linear-gradient(45deg, #2a2a2a 25%, transparent 25%, transparent 75%, #2a2a2a 75%, #2a2a2a);
-            background-size: 20px 20px;
-            background-position: 0 0, 10px 10px;
-            border: 1px solid #fff;
-            border-radius: 5px;
-            margin: 20px auto 0 auto;
-            display: none;
-            image-rendering: pixelated;
-        }
-
-        .decoder-info {
-            color: #a9b4c2;
-            font-size: 0.9em;
-            margin-top: 10px;
-        }
-
-        /* Tooltip styles */
-        .tooltip {
-            position: relative;
-            display: inline-block;
-            cursor: help;
-            margin-left: 5px;
-            color: #ed1f69;
-            font-weight: bold;
-        }
-
-        .tooltip .tooltiptext {
-            visibility: hidden;
-            width: 200px;
-            background-color: #333;
-            color: #fff;
-            text-align: center;
-            border-radius: 6px;
-            padding: 8px;
-            position: absolute;
-            z-index: 1;
-            bottom: 125%;
-            left: 50%;
-            margin-left: -100px;
-            opacity: 0;
-            transition: opacity 0.3s;
-            font-size: 0.8em;
-            font-weight: normal;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
-            pointer-events: none;
-        }
-
-        .tooltip:hover .tooltiptext {
-            visibility: visible;
-            opacity: 1;
-        }
-    </style>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <link rel="stylesheet" href="styles.css">
+    <script src="scripts/scripts.js" defer></script>
 </head>
 
 <body>
@@ -335,72 +48,77 @@
 
         <div class="tabs">
             <button class="tab-btn active" onclick="switchTab('tabCreator')">Theme Creator</button>
+            <button class="tab-btn" onclick="switchTab('tabLibrary')">Theme Library</button>
             <button class="tab-btn" onclick="switchTab('tabDecoder')">.bin Decoder</button>
         </div>
 
         <div id="tabCreator" class="tab-content active">
-            <h3 style="margin-top: 10px;">1. General Settings (theme.json)</h3>
+            <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 10px;">
+                <h3 style="margin: 0;">1. General Settings (theme.json)</h3>
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <div class="checkbox-group"
+                        style="margin: 0; white-space: nowrap; background: #1a1a1a; padding: 4px 10px; border-radius: 5px; border: 1px solid #333; display: flex; align-items: center; gap: 8px;">
+                        <label style="margin: 0; color: #4ea8de; font-weight: bold; font-size: 0.8em;">Versión:</label>
+                        <select id="tVersion"
+                            style="background: #222; color: #fff; border: 1px solid #444; border-radius: 3px; padding: 2px 4px; font-size: 0.75em; cursor: pointer;">
+                            <option value="latest">v1.2.0+</option>
+                            <option value="legacy">Legacy</option>
+                        </select>
+                    </div>
+                    <button class="btn-action"
+                        style="font-size: 0.8em; padding: 5px 12px; background: #4ea8de; color: #fff; border: none; border-radius: 4px; cursor: pointer; transition: background 0.3s;"
+                        onclick="document.getElementById('themeLoader').click()">
+                        Load Theme (JSON)
+                    </button>
+                </div>
+                <input type="file" id="themeLoader" accept=".json" style="display: none;"
+                    onchange="loadThemeFromFile(event)">
+            </div>
             <div
-                style="display: flex; flex-direction: column; gap: 15px; background: #222; padding: 20px; border-radius: 8px; border: 1px solid #333;">
+                style="display: flex; flex-direction: column; gap: 10px; background: #222; padding: 15px; border-radius: 8px; border: 1px solid #333;">
 
                 <!-- Row 1: Theme Name and Author -->
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <label style="margin: 0; width: 30%; color: #ccc;">Theme Name:</label>
-                        <input type="text" id="tName" value="My Awesome Theme"
-                            style="width: 65%; padding: 8px; margin: 0;">
-                    </div>
-                    <div style="display: flex; align-items: center; justify-content: space-between;">
-                        <label style="margin: 0; width: 30%; color: #ccc;">Author:</label>
-                        <input type="text" id="tAuthor" value="Your Name" style="width: 65%; padding: 8px; margin: 0;">
-                    </div>
+                <div style="display: grid; grid-template-columns: 1.5fr 1fr; gap: 10px;">
+                    <input type="text" id="tName" value="My Awesome Theme" placeholder="Theme Name"
+                        style="width: 100%; padding: 8px; margin: 0;">
+                    <input type="text" id="tAuthor" value="Your Name" placeholder="Author"
+                        style="width: 100%; padding: 8px; margin: 0;">
                 </div>
 
-                <!-- Row 2: Description -->
-                <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <label style="margin: 0; width: 14%; color: #ccc;">Description:</label>
-                    <input type="text" id="tDesc" value="An incredible theme"
-                        style="width: 83%; padding: 8px; margin: 0;">
-                </div>
+                <!-- Row 2: Description and Dark Mode -->
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <input type="text" id="tDesc" value="An incredible theme" placeholder="Theme Description"
+                        style="flex: 1; padding: 8px; margin: 0;">
 
-                <!-- Row 3: All 4 selectors in a single compact row -->
-                <div
-                    style="display: flex; gap: 15px; align-items: center; padding-top: 10px; border-top: 1px dashed #444;">
-                    <div class="checkbox-group" style="margin: 0; min-width: 150px;">
+
+
+                    <div class="checkbox-group"
+                        style="margin: 0; white-space: nowrap; background: #1a1a1a; padding: 5px 12px; border-radius: 5px; border: 1px solid #333;">
                         <input type="checkbox" id="tDark">
                         <label for="tDark"
-                            style="margin: 0; cursor: pointer; color: #ed1f69; font-weight: bold; white-space: nowrap;">Enable
-                            Dark Mode</label>
+                            style="margin: 0; cursor: pointer; color: #ed1f69; font-weight: bold; font-size: 0.85em;">Dark
+                            Mode</label>
                     </div>
+                </div>
 
-                    <div class="color-row"
-                        style="flex: 1; margin-bottom: 0; padding: 6px 12px; justify-content: space-between;">
-                        <label style="color: #ccc; white-space: nowrap;">Base Color:
+                <!-- Row 3: Main Base Color Selector -->
+                <div style="display: flex; gap: 10px; align-items: center;">
+                    <div class="color-row" style="flex: 1; margin-bottom: 0; padding: 5px 10px; border-radius: 4px;">
+                        <label style="color: #ccc; font-size: 0.8em; white-space: nowrap;">Base Theme Color (Primary):
                             <span class="tooltip">?
-                                <span class="tooltiptext">I have not discovered how the base color influences the
-                                    theme.</span>
+                                <span class="tooltiptext">The primary color used for accents in some system
+                                    elements.</span>
                             </span>
                         </label>
                         <input type="color" id="tColor" value="#ff2a5f">
-                    </div>
-                    <div class="color-row"
-                        style="flex: 1; margin-bottom: 0; padding: 6px 12px; justify-content: space-between;">
-                        <label style="color: #ccc; white-space: nowrap;">Menus (Unselected):</label>
-                        <input type="color" id="cUnselected" value="#333333">
-                    </div>
-                    <div class="color-row"
-                        style="flex: 1; margin-bottom: 0; padding: 6px 12px; justify-content: space-between;">
-                        <label style="color: #ccc; white-space: nowrap;">Menus (Selected):</label>
-                        <input type="color" id="cSelected" value="#ffffff">
                     </div>
                 </div>
             </div>
 
             <h3>2. Wallpapers & Setup</h3>
-            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
-
+            <div class="grid" style="grid-template-columns: 0.8fr 1.2fr; gap: 20px;">
                 <!-- Left Column: Uploads & Config -->
-                <div style="display: flex; flex-direction: column; gap: 20px;">
+                <div style="display: flex; flex-direction: column; gap: 10px;">
 
                     <div class="upload-box">
                         <label>Upload Top Screen</label>
@@ -414,40 +132,18 @@
                         <input type="file" id="imgBottom" accept="image/*" style="margin-top: 10px;">
                         <div class="cropper-container-wrapper" id="cropWrapBottom"><img id="imageBottom" src=""></div>
                     </div>
-
                 </div>
 
                 <!-- Right Column: DS Preview -->
                 <div class="upload-box ds-preview-container"
                     style="display: flex; flex-direction: column; align-items: center; justify-content: flex-start; background: #1a1a1a;">
-                    <!-- Overlay Box Config placed under Upload Top Screen -->
-                    <div class="overlay-controls" style="margin-top: 20px;">
-                        <div class="checkbox-group" style="margin-top:0; margin-bottom: 15px;">
-                            <input type="checkbox" id="boxEnable" checked>
-                            <label for="boxEnable" style="color: #ed1f69; font-size: 1.1em;"><b>Draw Translucent
-                                    Box</b></label>
-                        </div>
-                        <div id="overlaySettings">
-                            <div style="display: flex; gap: 10px; margin-bottom: 10px;">
-                                <div class="color-row" style="flex: 1;"><label>Fill:</label><input type="color"
-                                        id="boxColor" value="#ffffff"></div>
-                                <div class="color-row" style="flex: 1;"><label>Border:</label><input type="color"
-                                        id="boxBorderColor" value="#ed1f69"></div>
-                            </div>
-                            <label>Fill Opacity:</label> <input type="range" id="boxOpacity" min="0" max="100"
-                                value="80">
-                            <label style="margin-top: 10px;">Corner Radius:</label> <input type="range" id="boxRadius"
-                                min="0" max="30" value="8">
-                        </div>
-                    </div>
 
-                    <label
-                        style="color: #ed1f69; font-size: 1.2em; font-weight: bold; margin-top: 20px; margin-bottom: 5px;">Nintendo
+                    <label style="color: #ed1f69; font-size: 1.2em; font-weight: bold; margin-bottom: 5px;">Nintendo
                         DS
                         Preview</label>
 
-                    <!-- DS Frame container (css variables to easily adjust positions if your png is distinct) -->
-                    <div style="position: relative; max-width: 360px; width: 100%; 
+                    <!-- DS Frame container -->
+                    <div style="position: relative;  width: 100%; 
                         --t-top: 7.5%; --t-left: 27%; --t-w: 46%; --t-h: 33%;
                         --b-top: 58.5%; --b-left: 27%; --b-w: 46%; --b-h: 33%;">
                         <img src="images/ds_frame.png" alt="DS Frame"
@@ -468,80 +164,249 @@
                                 style="width: 100%; height: 100%; object-fit: fill; display: block;"></canvas>
                         </div>
                     </div>
+
+                    <!-- NESTED TAB PANEL (Under Preview) -->
+                    <div style="width: 100%; margin-top: 20px; border-top: 1px solid #333; padding-top: 15px;">
+                        <div class="nested-tabs">
+                            <button class="nested-tab-btn active"
+                                onclick="switchNestedTab('ntOverlay')">Overlay</button>
+                            <button class="nested-tab-btn" onclick="switchNestedTab('ntIcons')">Icons</button>
+                            <button class="nested-tab-btn" onclick="switchNestedTab('ntPositioning')">Layout</button>
+                        </div>
+
+                        <!-- TAB 1: OVERLAY & COLORS -->
+                        <div id="ntOverlay" class="nested-tab-content active" style="padding: 10px 0;">
+                            <div class="overlay-controls" style="margin:0;">
+                                <div class="checkbox-group" style="margin-bottom: 10px;">
+                                    <input type="checkbox" id="boxEnable" checked>
+                                    <label for="boxEnable" style="color: #ed1f69; font-size:0.85em;"><b>Draw Translucent
+                                            Box</b></label>
+                                </div>
+                                <div id="overlaySettings">
+                                    <div style="display: flex; gap: 5px; margin-bottom: 10px;">
+                                        <div class="color-row" style="flex: 1; margin:0; padding:2px 5px;"><label
+                                                style="font-size:0.75em">Fill:</label><input type="color" id="boxColor"
+                                                value="#ffffff"></div>
+                                        <div class="color-row" style="flex: 1; margin:0; padding:2px 5px;"><label
+                                                style="font-size:0.75em">Border:</label><input type="color"
+                                                id="boxBorderColor" value="#ed1f69"></div>
+                                    </div>
+                                    <div class="compact-grid">
+                                        <div style="font-size:0.75em"><label>Opacity:</label><input type="range"
+                                                id="boxOpacity" min="0" max="100" value="80"></div>
+                                        <div style="font-size:0.75em"><label>Radius:</label><input type="range"
+                                                id="boxRadius" min="0" max="30" value="8"></div>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                        </div>
+
+                        <!-- TAB 2: CUSTOM MENU ICONS -->
+                        <div id="ntIcons" class="nested-tab-content" style="padding: 10px 0;">
+                            <div class="overlay-controls" style="margin:10px 0 0 0;">
+                                <label style="color: #ed1f69; margin: 0 0 5px 0; font-size: 0.85em;"><b>Default Menu
+                                        Colors</b></label>
+                                <p style="font-size: 0.85em; color: #aaa; margin-top: 0;">These colors will only be
+                                    applied if custom icons are not used.</p>
+                                <div style="display: flex; gap: 5px;">
+                                    <div class="color-row" style="flex: 1; margin:0; padding: 2px 5px;"><label
+                                            style="font-size:0.75em">Unselected:</label><input type="color"
+                                            id="cUnselected" value="#333333"></div>
+                                    <div class="color-row" style="flex: 1; margin:0; padding: 2px 5px;"><label
+                                            style="font-size:0.75em">Selected:</label><input type="color" id="cSelected"
+                                            value="#ffffff"></div>
+                                </div>
+                            </div>
+                            <br>
+                            <div class="upload-box" style="padding: 10px; background: #1a1a1a; margin-bottom:10px;">
+                                <label style="font-size: 0.75em;">Grid Cell (64x48)</label>
+                                <div style="display: flex; gap: 5px; align-items: center; margin-top:5px;">
+                                    <div style="flex:1"><input type="file" id="imgGrid" accept="image/png"
+                                            style="font-size: 0.65em; width:100%;"></div>
+                                    <div style="width: 40px; height: 32px; background: #000; border: 1px dashed #555;">
+                                        <img id="previewImgGrid" style="max-width:100%; display:none;">
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 5px; align-items: center; margin-top:5px;">
+                                    <div style="flex:1"><input type="file" id="imgGridSel" accept="image/png"
+                                            style="font-size: 0.65em; width:100%;"></div>
+                                    <div style="width: 40px; height: 32px; background: #000; border: 1px dashed #bbb;">
+                                        <img id="previewImgGridSel" style="max-width:100%; display:none;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="upload-box" style="padding: 10px; background: #1a1a1a;">
+                                <label style="font-size: 0.75em;">Banner Cell (256x48)</label>
+                                <div style="display: flex; gap: 5px; align-items: center; margin-top:5px;">
+                                    <div style="flex:1"><input type="file" id="imgBanner" accept="image/png"
+                                            style="font-size: 0.65em; width:100%;"></div>
+                                    <div style="width: 120px; height: 22px; background: #000; border: 1px dashed #555;">
+                                        <img id="previewImgBanner" style="max-width:100%; display:none;">
+                                    </div>
+                                </div>
+                                <div style="display: flex; gap: 5px; align-items: center; margin-top:5px;">
+                                    <div style="flex:1"><input type="file" id="imgBannerSel" accept="image/png"
+                                            style="font-size: 0.65em; width:100%;"></div>
+                                    <div style="width: 120px; height: 22px; background: #000; border: 1px dashed #bbb;">
+                                        <img id="previewImgBannerSel" style="max-width:100%; display:none;">
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="display: flex; gap: 5px; margin-top: 10px;">
+                                <button id="btnPreviewGridLayout" class="btn-action"
+                                    style="font-size:0.7em; padding:4px;">Grid</button>
+                                <button id="btnPreviewBannerLayout" class="btn-action"
+                                    style="font-size:0.7em; padding:4px;">Banner</button>
+                                <button id="btnClearLayout" class="btn-action"
+                                    style="font-size:0.7em; padding:4px; background:#555; display:none;">Clear</button>
+                            </div>
+                        </div>
+
+                        <!-- TAB 3: UI POSITIONING -->
+                        <div id="ntPositioning" class="nested-tab-content"
+                            style="padding: 10px 0; max-height: 400px; overflow-y: auto;">
+                            <p
+                                style="font-size: 0.8em; text-align: center; color: #ed1f69; margin-top: 0; font-weight: bold;">
+                                ⚠️ this only works for pico launcher v1.2.0 and later versions ⚠️
+                            </p>
+
+
+                            <div style="display: flex; gap: 10px; width: 100%;">
+                                <div class="checkbox-group"
+                                    style="flex: 1; margin-bottom: 10px; background: #333; padding: 2px 10px; border-radius: 4px; justify-content: space-between;">
+                                    <label for="showGuidesTop" style="color: #fff; margin: 0; font-size:0.8em;">Top
+                                        Guides</label>
+                                    <input type="checkbox" id="showGuidesTop" checked>
+                                </div>
+                                <div class="checkbox-group"
+                                    style="flex: 1; margin-bottom: 10px; background: #333; padding: 2px 10px; border-radius: 4px; justify-content: space-between;">
+                                    <label for="showGuidesBottom"
+                                        style="color: #fff; margin: 0; font-size:0.8em;">Bottom Guides</label>
+                                    <input type="checkbox" id="showGuidesBottom" checked>
+                                </div>
+                            </div>
+
+                            <div style="display: flex; flex-direction: column; gap: 10px;">
+                                <div class="overlay-controls">
+                                    <label style="color: #ed1f69; margin:0; font-size:0.85em;"><b>App Icon</b></label>
+                                    <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                        <div style="flex:1"><label style="font-size:0.7em">X Position:</label><input
+                                                type="number" id="tiX" value="24" style="padding:4px; font-size:0.75em">
+                                        </div>
+                                        <div style="flex:1"><label style="font-size:0.7em">Y Position:</label><input
+                                                type="number" id="tiY" value="132"
+                                                style="padding:4px; font-size:0.75em"></div>
+                                        <div class="color-row" style="flex:1.5; margin:0; padding:2px 5px;"><label
+                                                style="font-size:0.7em">Blend:</label><input type="color" id="tiBC"
+                                                value="#c8c8c8"></div>
+                                    </div>
+                                </div>
+                                <div class="overlay-controls">
+                                    <label style="color: #ed1f69; margin:0; font-size:0.85em;"><b>Banner Line
+                                            0</b></label>
+                                    <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                        <div style="flex:1"><label style="font-size:0.7em">X Position:</label><input
+                                                type="number" id="tbt0X" value="70"
+                                                style="padding:4px; font-size:0.75em"></div>
+                                        <div style="flex:1"><label style="font-size:0.7em">Y Position:</label><input
+                                                type="number" id="tbt0Y" value="126"
+                                                style="padding:4px; font-size:0.75em"></div>
+                                        <div style="flex:1"><label style="font-size:0.7em">Width:</label><input
+                                                type="number" id="tbt0W" value="176"
+                                                style="padding:4px; font-size:0.75em"></div>
+                                    </div>
+                                    <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                        <div class="color-row" style="flex:1; margin:0; padding:2px 5px;"><label
+                                                style="font-size:0.7em">Text Color:</label><input type="color"
+                                                id="tbt0TC" value="#1e1e1e"></div>
+                                        <div class="color-row" style="flex:1; margin:0; padding:2px 5px;"><label
+                                                style="font-size:0.7em">Blend Color:</label><input type="color"
+                                                id="tbt0BC" value="#c8c8c8"></div>
+                                    </div>
+                                </div>
+                                <div class="overlay-controls">
+                                    <label style="color: #ed1f69; margin:0; font-size:0.85em;"><b>Lines 1 &
+                                            2</b></label>
+                                    <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                        <div style="flex:1"><label style="font-size:0.74em">L1 Y Position:</label><input
+                                                type="number" id="tbt1Y" value="141"
+                                                style="padding:4px; font-size:0.75em"></div>
+                                        <div style="flex:1"><label style="font-size:0.74em">L2 Y Position:</label><input
+                                                type="number" id="tbt2Y" value="155"
+                                                style="padding:4px; font-size:0.75em"></div>
+                                        <div style="flex:1"><label style="font-size:0.74em">Width:</label><input
+                                                type="number" id="tbt1W" value="176"
+                                                oninput="document.getElementById('tbt2W').value=this.value"
+                                                style="padding:4px; font-size:0.75em"></div>
+                                        <input type="hidden" id="tbt2W" value="176"><input type="hidden" id="tbt1X"
+                                            value="70"><input type="hidden" id="tbt2X" value="70">
+                                    </div>
+                                    <div
+                                        style="display: grid; grid-template-columns: 1fr 1fr; gap:5px; margin-top:5px;">
+                                        <div class="color-row" style="padding:2px 5px;"><label
+                                                style="font-size:0.7em">L1 Text Color:</label><input type="color"
+                                                id="tbt1TC" value="#1e1e1e"></div>
+                                        <div class="color-row" style="padding:2px 5px;"><label
+                                                style="font-size:0.7em">L1 Blend Color:</label><input type="color"
+                                                id="tbt1BC" value="#c8c8c8"></div>
+                                        <div class="color-row" style="padding:2px 5px;"><label
+                                                style="font-size:0.7em">L2 Text Color:</label><input type="color"
+                                                id="tbt2TC" value="#1e1e1e"></div>
+                                        <div class="color-row" style="padding:2px 5px;"><label
+                                                style="font-size:0.7em">L2 Blend Color:</label><input type="color"
+                                                id="tbt2BC" value="#c8c8c8"></div>
+                                    </div>
+                                </div>
+                                <div class="overlay-controls">
+                                    <label style="color: #ed1f69; margin:0; font-size:0.85em;"><b>File Name</b></label>
+                                    <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                        <div style="flex:1"><label style="font-size:0.7em">X Position:</label><input
+                                                type="number" id="tfnX" value="18"
+                                                style="padding:4px; font-size:0.75em"></div>
+                                        <div style="flex:1"><label style="font-size:0.7em">Y Position:</label><input
+                                                type="number" id="tfnY" value="170"
+                                                style="padding:4px; font-size:0.75em"></div>
+                                        <div style="flex:1"><label style="font-size:0.7em">Width:</label><input
+                                                type="number" id="tfnW" value="220"
+                                                style="padding:4px; font-size:0.75em"></div>
+                                    </div>
+                                    <div style="display: flex; gap: 5px; margin-top: 5px;">
+                                        <div class="color-row" style="flex:1; margin:0; padding:2px 5px;"><label
+                                                style="font-size:0.7em">Text Color:</label><input type="color"
+                                                id="tfnTC" value="#1e1e1e"></div>
+                                        <div class="color-row" style="flex:1; margin:0; padding:2px 5px;"><label
+                                                style="font-size:0.7em">Blend Color:</label><input type="color"
+                                                id="tfnBC" value="#c8c8c8"></div>
+                                    </div>
+                                </div>
+                                <div class="overlay-controls">
+                                    <label style="color: #ed1f69; margin:0; font-size:0.85em;"><b>Bottom Blends &
+                                            Colors</b></label>
+                                    <div class="color-row" style="margin-top:5px; padding:2px 5px;"><label
+                                            style="font-size:0.7em">Grid Blend Color:</label><input type="color"
+                                            id="giBC" value="#c8c8c8"></div>
+                                    <div class="color-row" style="margin-top:5px; padding:2px 5px;"><label
+                                            style="font-size:0.7em">Banner Blend Color:</label><input type="color"
+                                            id="bliBC" value="#c8c8c8"></div>
+                                    <div
+                                        style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap:3px; margin-top:5px;">
+                                        <div class="color-row" style="padding:2px 5px;"><label
+                                                style="font-size:0.65em">L0 Text Color:</label><input type="color"
+                                                id="blt0TC" value="#1e1e1e"></div>
+                                        <div class="color-row" style="padding:2px 5px;"><label
+                                                style="font-size:0.65em">L1 Text Color:</label><input type="color"
+                                                id="blt1TC" value="#1e1e1e"></div>
+                                        <div class="color-row" style="padding:2px 5px;"><label
+                                                style="font-size:0.65em">L2 Text Color:</label><input type="color"
+                                                id="blt2TC" value="#1e1e1e"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-
-            </div>
-
-            <!-- Custom Icons Section -->
-            <h3 style="margin-top: 30px;">3. Custom Menu Icons (Grid & Banner List) (OPTIONAL)</h3>
-            <p style="font-size: 0.85em; color: #aaa; margin-top: 0;">Upload your own custom PNG icons. If left empty,
-                default
-                shapes will be used. <br> You can **<a href="templates/CustomMenusTemplates.zip"
-                    style="color: #ed1f69; text-decoration: none;">[Download these Layout Templates]</a>** as a
-                reference to create your own assets in editing software like Photoshop, GIMP, or NitroPaint.</p>
-            <div class="grid" style="grid-template-columns: 1fr 1fr; gap: 20px;">
-                <!-- Row 1: Normals -->
-                <!-- Grid Normal Box -->
-                <div class="upload-box" style="display: flex; gap: 20px; align-items: center; text-align: left;">
-                    <div style="width: 65%;">
-                        <label style="color: #ed1f69;"><b>Grid Cell:</b> Unselected (64x48)</label>
-                        <input type="file" id="imgGrid" accept="image/png" style="width: 100%; margin-top: 5px;">
-                    </div>
-                    <div
-                        style="flex: 1; height: 60px; background: #1a1a1a; border: 1px dashed #555; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                        <img id="previewImgGrid"
-                            style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
-                    </div>
-                </div>
-
-                <!-- Banner Normal Box -->
-                <div class="upload-box" style="display: flex; gap: 20px; align-items: center; text-align: left;">
-                    <div style="width: 65%;">
-                        <label style="color: #ed1f69;"><b>Banner Cell:</b> Unselected (256x49)</label>
-                        <input type="file" id="imgBanner" accept="image/png" style="width: 100%; margin-top: 5px;">
-                    </div>
-                    <div
-                        style="flex: 1; height: 60px; background: #1a1a1a; border: 1px dashed #555; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                        <img id="previewImgBanner"
-                            style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
-                    </div>
-                </div>
-
-                <!-- Row 2: Selecteds -->
-                <!-- Grid Selected Box -->
-                <div class="upload-box" style="display: flex; gap: 20px; align-items: center; text-align: left;">
-                    <div style="width: 65%;">
-                        <label style="color: #ed1f69;"><b>Grid Cell:</b> Selected (64x48)</label>
-                        <input type="file" id="imgGridSel" accept="image/png" style="width: 100%; margin-top: 5px;">
-                    </div>
-                    <div
-                        style="flex: 1; height: 60px; background: #1a1a1a; border: 1px dashed #bbb; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                        <img id="previewImgGridSel"
-                            style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
-                    </div>
-                </div>
-
-                <!-- Banner Selected Box -->
-                <div class="upload-box" style="display: flex; gap: 20px; align-items: center; text-align: left;">
-                    <div style="width: 65%;">
-                        <label style="color: #ed1f69;"><b>Banner Cell:</b> Selected (256x49)</label>
-                        <input type="file" id="imgBannerSel" accept="image/png" style="width: 100%; margin-top: 5px;">
-                    </div>
-                    <div
-                        style="flex: 1; height: 60px; background: #1a1a1a; border: 1px dashed #bbb; border-radius: 5px; display: flex; align-items: center; justify-content: center; overflow: hidden;">
-                        <img id="previewImgBannerSel"
-                            style="max-width: 100%; max-height: 100%; display: none; image-rendering: pixelated;">
-                    </div>
-                </div>
-            </div>
-
-            <div style="display: flex; gap: 10px; margin-top: 15px;">
-                <button id="btnPreviewGridLayout" class="btn-action" style="flex: 1; opacity: 0.5;" disabled>Preview
-                    Grid on Bottom Screen</button>
-                <button id="btnPreviewBannerLayout" class="btn-action" style="flex: 1; opacity: 0.5;" disabled>Preview
-                    Banner on Bottom Screen</button>
-                <button id="btnClearLayout" class="btn-action" style="flex: 0.5; display: none; background: #555;">Clear
-                    Preview</button>
             </div>
 
             <!-- Audio Section -->
@@ -568,6 +433,13 @@
                         <div style="flex: 1;"><label>End Time (Seconds):</label><input type="number" id="audioEnd"
                                 value="0" min="0" step="0.01"></div>
                     </div>
+                    <div class="checkbox-group"
+                        style="margin-bottom: 15px; background: #333; padding: 10px; border-radius: 5px; border: 1px solid #444;">
+                        <input type="checkbox" id="audioMono" checked>
+                        <label for="audioMono"
+                            style="margin:0; color: #4ea8de; font-weight: bold; font-size: 0.9em; cursor: pointer;">Mono
+                            Encoding (Half size, recommended for NDS)</label>
+                    </div>
                     <div style="display: flex; gap: 10px;">
                         <button id="btnPreviewAudio" class="btn-action" style="flex: 1;">Play Selected Range</button>
                         <button id="btnDownloadAudioOnly" class="btn-action"
@@ -577,6 +449,23 @@
             </div>
 
             <button id="btnGenerate" class="btn-main">Generate Full Theme (.zip)</button>
+        </div>
+
+        <!-- TAB 2: THEME LIBRARY -->
+        <div id="tabLibrary" class="tab-content">
+            <h1 style="color: #ed1f69;">Theme Library</h1>
+            <div class="library-explanation">
+                <strong>Information:</strong> Most themes displayed here are sourced from the community and hosted on
+                <strong>GBAtemp</strong>. This tool provides a curated list of downloadable themes for Pico Launcher
+                discovered on the forum.
+            </div>
+
+            <div id="themeList" class="theme-grid">
+                <div id="loading-library">
+                    <div class="spinner"></div>
+                    <p>Fetching community themes from Supabase...</p>
+                </div>
+            </div>
         </div>
 
         <!-- TAB 3: DECODER -->
@@ -603,864 +492,7 @@
     <canvas id="offscreenCanvas" style="display:none;"></canvas>
 
     <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(tab => tab.classList.remove('active'));
-            document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
-        }
-        /* =========================================
-           1. INITIALIZE NATIVE WASM AUDIO ENCODER
-           ========================================= */
-        let isWasmAvailable = false;
-        let globalSoundParams = null;
-        let globalRawPcm16 = null;
-        let resolveEncode = null;
-        let rejectEncode = null;
-        const wasmStatus = document.getElementById('wasmStatus');
-        const audioUploader = document.getElementById('audioUploader');
 
-        let soundWorker = null;
-
-        function initSoundWorker() {
-            if (soundWorker) soundWorker.terminate();
-            isWasmAvailable = false;
-            wasmStatus.innerText = "⏳ Initializing Audio Encoder...";
-            wasmStatus.style.color = "#aaa";
-
-            soundWorker = new Worker('sound/sound.js');
-            soundWorker.onmessage = function (e) {
-                if (e.data.cmd === "init_result") {
-                    if (e.data.result) {
-                        isWasmAvailable = true;
-                        wasmStatus.innerText = "✅ WASM Encoder Ready!";
-                        wasmStatus.style.color = "#4caf50";
-                        audioUploader.disabled = false;
-                    } else {
-                        wasmStatus.innerText = "❌ WASM Initialization failed.";
-                    }
-                } else if (e.data.cmd === "decode_result") {
-                    if (e.data.result) {
-                        globalSoundParams = e.data.result.soundParams;
-                        globalRawPcm16 = e.data.result.rawPcm16;
-                    } else {
-                        alert("Audio decode failed inside WASM Worker!");
-                    }
-                } else if (e.data.cmd === "encode_result") {
-                    if (resolveEncode) {
-                        if (e.data.result) resolveEncode(e.data.result);
-                        else rejectEncode("Encode failed entirely");
-                        resolveEncode = null;
-                        rejectEncode = null;
-                    }
-                }
-            };
-            soundWorker.onerror = function () {
-                wasmStatus.innerText = "❌ Worker Error. Ensure sound.js & sound.wasm are accessible.";
-            };
-            soundWorker.postMessage({ cmd: "init" });
-        }
-
-        // Run initial init
-        initSoundWorker();
-
-        /* =========================================
-           2. COLOR PICKERS & CROPPER
-           ========================================= */
-        function initColorPicker(inputId) {
-            const input = document.getElementById(inputId);
-            const container = document.createElement('div');
-            container.className = 'pickr-container';
-            input.type = 'hidden';
-            input.parentNode.insertBefore(container, input.nextSibling);
-
-            const pickr = Pickr.create({
-                el: container, theme: 'nano', default: input.value,
-                swatches: ['#ff2a5f', '#ed1f69', '#4ea8de', '#ffffff', '#333333', '#000000'],
-                components: { preview: true, hue: true, interaction: { hex: true, input: true, save: true } },
-                i18n: { 'btn:save': 'Save' }
-            });
-            pickr.on('change', (color) => { input.value = color.toHEXA().toString(); input.dispatchEvent(new Event('input')); })
-                .on('save', () => pickr.hide());
-        } ['tColor', 'cUnselected', 'cSelected', 'boxColor', 'boxBorderColor'].forEach(initColorPicker);
-
-        let cropperTop = null, cropperBottom = null;
-        function setupCropper(inputId, imageId, wrapperId, isTop) {
-            document.getElementById(inputId).addEventListener('change', function (e) {
-                const file = e.target.files[0]; if (!file) return;
-                const reader = new FileReader();
-                reader.onload = function (event) {
-                    const imgElement = document.getElementById(imageId);
-                    imgElement.src = event.target.result;
-                    document.getElementById(wrapperId).style.display = 'block';
-                    if (isTop && cropperTop) cropperTop.destroy();
-                    if (!isTop && cropperBottom) cropperBottom.destroy();
-                    let options = { aspectRatio: 256 / 192, viewMode: 1, autoCropArea: 1, background: false };
-                    if (isTop) { options.crop = updateTopPreview; cropperTop = new Cropper(imgElement, options); }
-                    else { options.crop = updateBottomPreview; cropperBottom = new Cropper(imgElement, options); }
-                }; reader.readAsDataURL(file);
-            });
-        }
-        setupCropper('imgTop', 'imageTop', 'cropWrapTop', true); setupCropper('imgBottom', 'imageBottom', 'cropWrapBottom', false);
-
-        function drawRoundRect(ctx, x, y, w, h, r) {
-            ctx.beginPath(); ctx.moveTo(x + r, y); ctx.lineTo(x + w - r, y); ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-            ctx.lineTo(x + w, y + h - r); ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h); ctx.lineTo(x + r, y + h);
-            ctx.quadraticCurveTo(x, y + h, x, y + h - r); ctx.lineTo(x, y + r); ctx.quadraticCurveTo(x, y, x + r, y); ctx.closePath();
-        }
-        function updateTopPreview() {
-            if (!cropperTop) return;
-            const canvasFinal = document.getElementById('previewTopFinal');
-            const ctx = canvasFinal.getContext('2d');
-            const cropped = cropperTop.getCroppedCanvas({ width: 256, height: 192 });
-            ctx.clearRect(0, 0, 256, 192); ctx.drawImage(cropped, 0, 0);
-            if (document.getElementById('boxEnable').checked) {
-                ctx.globalAlpha = document.getElementById('boxOpacity').value / 100; ctx.fillStyle = document.getElementById('boxColor').value;
-                drawRoundRect(ctx, 8, 120, 240, 60, parseInt(document.getElementById('boxRadius').value)); ctx.fill();
-                ctx.globalAlpha = 1.0; ctx.lineWidth = 1.5; ctx.strokeStyle = document.getElementById('boxBorderColor').value; ctx.stroke();
-            }
-        } ['boxEnable', 'boxColor', 'boxBorderColor', 'boxOpacity', 'boxRadius'].forEach(id => {
-            document.getElementById(id).addEventListener('input', updateTopPreview);
-            document.getElementById(id).addEventListener('change', updateTopPreview);
-        });
-
-        let currentPreviewLayout = 'none';
-
-        const overlayBottomImg = new Image();
-        overlayBottomImg.src = 'images/overlaybuttons.png';
-        overlayBottomImg.onload = function () {
-            if (cropperBottom) updateBottomPreview();
-        };
-
-        function updateBottomPreview() {
-            if (!cropperBottom) return;
-            const canvasFinal = document.getElementById('previewBottomFinal');
-            const ctx = canvasFinal.getContext('2d');
-            const cropped = cropperBottom.getCroppedCanvas({ width: 256, height: 192 });
-            ctx.clearRect(0, 0, 256, 192);
-            if (cropped) ctx.drawImage(cropped, 0, 0);
-
-            // Draw original top bar UI overlay
-            if (overlayBottomImg.complete && overlayBottomImg.naturalWidth > 0) {
-                ctx.drawImage(overlayBottomImg, 0, 0, 256, 33);
-            }
-
-            // Draw requested layout
-            if (currentPreviewLayout === 'grid') {
-                const imgNorm = document.getElementById('previewImgGrid');
-                const imgSel = document.getElementById('previewImgGridSel');
-                for (let r = 0; r < 3; r++) {
-                    for (let c = 0; c < 5; c++) {
-                        let xPos = 8 + (c * 48); // 8px inicial para alinearlo correcto a la línea roja
-                        if (r === 1 && c === 2) ctx.drawImage(imgSel, xPos, 40 + r * 48, 64, 48);
-                        else ctx.drawImage(imgNorm, xPos, 40 + r * 48, 64, 48);
-                    }
-                }
-            } else if (currentPreviewLayout === 'banner') {
-                const imgNorm = document.getElementById('previewImgBanner');
-                const imgSel = document.getElementById('previewImgBannerSel');
-                // 4 rows fitting 256x49
-                for (let r = 0; r < 4; r++) {
-                    if (r === 1) ctx.drawImage(imgSel, 43, -1 + r * 49, 256, 49);
-                    else ctx.drawImage(imgNorm, 43, -1 + r * 49, 256, 49);
-                }
-            }
-        }
-
-        /* =========================================
-           3. AUDIO VISUALIZER (WAVESURFER)
-           ========================================= */
-        const audioContext = new (window.AudioContext || window.webkitAudioContext)();
-        let currentAudioBuffer = null;
-        let wavesurfer = null, wsRegions = null, activeRegion = null;
-        const audioStart = document.getElementById('audioStart'), audioEnd = document.getElementById('audioEnd');
-
-        document.getElementById('audioUploader').addEventListener('change', function (e) {
-            const file = e.target.files[0]; if (!file) return;
-            const reader = new FileReader();
-            reader.onload = function (event) {
-                // Enviar nativo al WASM Global
-                soundWorker.postMessage({ cmd: "decode", src: new Uint8Array(event.target.result.slice(0)) });
-
-                if (audioContext.state === 'suspended') audioContext.resume();
-                audioContext.decodeAudioData(event.target.result, buffer => { currentAudioBuffer = buffer; });
-            };
-            reader.readAsArrayBuffer(file);
-
-            if (wavesurfer) wavesurfer.destroy();
-            wavesurfer = WaveSurfer.create({ container: '#waveform', waveColor: '#4ea8de', progressColor: '#ed1f69', cursorColor: '#fff', height: 80, normalize: true, interact: false });
-            wsRegions = wavesurfer.registerPlugin(WaveSurfer.Regions.create());
-
-            wavesurfer.on('ready', () => {
-                const duration = wavesurfer.getDuration();
-                document.getElementById('audioDurationText').innerText = duration.toFixed(2);
-                document.getElementById('audioControls').style.display = 'block';
-
-                // Límite de seguridad visual de 90 segundos
-                let endSafe = Math.min(duration, 90);
-
-                activeRegion = wsRegions.addRegion({ start: 0, end: endSafe, color: 'rgba(187, 134, 252, 0.4)', drag: true, resize: true });
-                wsRegions.on('region-updated', (r) => { audioStart.value = r.start.toFixed(2); audioEnd.value = r.end.toFixed(2); });
-                audioStart.value = activeRegion.start.toFixed(2); audioEnd.value = activeRegion.end.toFixed(2);
-                audioStart.max = duration; audioEnd.max = duration;
-            });
-            wavesurfer.on('play', () => document.getElementById('btnPreviewAudio').innerText = "Stop Preview");
-            wavesurfer.on('pause', () => document.getElementById('btnPreviewAudio').innerText = "Play Selected Range");
-            wavesurfer.load(URL.createObjectURL(file));
-        });
-
-        function updateRegionFromInputs() {
-            if (!activeRegion) return;
-            let s = parseFloat(audioStart.value), e = parseFloat(audioEnd.value);
-            if (s >= 0 && e > s) activeRegion.setOptions({ start: s, end: e });
-        }
-        audioStart.addEventListener('input', updateRegionFromInputs); audioEnd.addEventListener('input', updateRegionFromInputs);
-        document.getElementById('btnPreviewAudio').addEventListener('click', () => {
-            if (wavesurfer.isPlaying()) wavesurfer.pause(); else if (activeRegion) activeRegion.play();
-        });
-
-        document.getElementById('btnDownloadAudioOnly').addEventListener('click', async function () {
-            if (!globalSoundParams || !isWasmAvailable) return alert("Audio not loaded or encoder not ready.");
-            const btn = this;
-            const originalText = btn.innerText;
-            btn.innerText = "Encoding Audio...";
-            btn.disabled = true;
-            try {
-                const startS = parseFloat(audioStart.value);
-                const endS = parseFloat(audioEnd.value);
-                if (endS > startS) {
-                    let params = new Uint32Array(globalSoundParams);
-                    let sampleRate = params[0];
-                    let origTotalSamples = params[1];
-                    let channels = params[5] || 2;
-
-                    let startSample = Math.floor(startS * sampleRate);
-                    let endSample = Math.floor(endS * sampleRate);
-                    let totalSamples = endSample - startSample;
-
-                    let trimmedPcm16 = null;
-                    if (globalRawPcm16) {
-                        trimmedPcm16 = new Int16Array(totalSamples * channels);
-                        for (let c = 0; c < channels; c++) {
-                            let srcOffset = (c * origTotalSamples) + startSample;
-                            let dstOffset = c * totalSamples;
-                            for (let i = 0; i < totalSamples; i++) {
-                                trimmedPcm16[dstOffset + i] = globalRawPcm16[srcOffset + i];
-                            }
-                        }
-                    }
-
-                    params[1] = totalSamples;
-                    params[2] = 0; // [2] = Loop Flag
-                    params[3] = 0; // Loop start (at the start of trimmed segment)
-                    params[4] = totalSamples; // Loop end (at the end of trimmed segment)
-                    params[6] = channels;
-
-                    const bcstmBytes = await new Promise((resolve, reject) => {
-                        resolveEncode = resolve;
-                        rejectEncode = reject;
-                        soundWorker.postMessage({ cmd: "encode", buildType: 1, soundParams: params, pcm16: trimmedPcm16 ? trimmedPcm16.buffer : null });
-                    });
-
-                    if (bcstmBytes && bcstmBytes.length > 1024) {
-                        const blob = new Blob([bcstmBytes], { type: "application/octet-stream" });
-                        const link = document.createElement("a");
-                        link.href = URL.createObjectURL(blob);
-                        link.download = "bgm.bcstm";
-                        link.click();
-                        // Cleanup memory
-                        initSoundWorker();
-                    } else {
-                        alert("⚠️ Audio encoder returned empty file. Skipping audio.");
-                    }
-                } else {
-                    alert("Invalid audio range. Start time must be less than end time.");
-                }
-            } catch (error) {
-                alert("Error encoding audio: " + error);
-            } finally {
-                btn.innerText = originalText;
-                btn.disabled = false;
-            }
-        });
-
-
-
-
-        /* =========================================
-           5. NDS TEXTURE & ZIP GENERATION
-           ========================================= */
-        const offCanvas = document.getElementById('offscreenCanvas');
-        const offCtx = offCanvas.getContext('2d', { willReadFrequently: true });
-
-        function hexToRgb(h) { let b = parseInt(h.substring(1), 16); return { r: (b >> 16) & 255, g: (b >> 8) & 255, b: b & 255 }; }
-        function canvasTo15Bpp(canvas) {
-            const data = canvas.getContext('2d').getImageData(0, 0, 256, 192).data, buffer = new Uint8Array(256 * 192 * 2);
-            for (let i = 0, j = 0; i < data.length; i += 4, j += 2) {
-                let c16 = (Math.round((data[i + 2] / 255) * 31) << 10) | (Math.round((data[i + 1] / 255) * 31) << 5) | Math.round((data[i] / 255) * 31);
-                if (data[i + 3] > 128) c16 |= (1 << 15); buffer[j] = c16 & 0xFF; buffer[j + 1] = (c16 >> 8) & 0xFF;
-            } return buffer;
-        }
-        function generateCustomPalette(hex) {
-            const rgb = hexToRgb(hex);
-            const ramp = [0, 0, 0.04, 0.09, 0.29, 0.54, 0.80, 0.83, 0.90, 0.93, 1, 1, 1, 1, 1, 1];
-            const pb = new Uint8Array(64); // 32 colors total
-            // Indices 0-15 remain black (0x0000)
-            for (let i = 0; i < 16; i++) {
-                let r = Math.round((rgb.r / 255) * 31 * ramp[i]);
-                let g = Math.round((rgb.g / 255) * 31 * ramp[i]);
-                let b = Math.round((rgb.b / 255) * 31 * ramp[i]);
-                let c16 = (b << 10) | (g << 5) | r;
-                // We fill from index 16 to 31 (the "second row")
-                let pos = (i + 16) * 2;
-                pb[pos] = c16 & 0xFF; pb[pos + 1] = (c16 >> 8) & 0xFF;
-            }
-            return pb;
-        }
-
-        function quantizeTo32Colors(imageData) {
-            let colorCounts = {};
-            for (let i = 0; i < imageData.data.length; i += 4) {
-                if (imageData.data[i + 3] < 10) continue;
-                let r = imageData.data[i] >> 3;
-                let g = imageData.data[i + 1] >> 3;
-                let b = imageData.data[i + 2] >> 3;
-                let key = `${r},${g},${b}`;
-                colorCounts[key] = (colorCounts[key] || 0) + 1;
-            }
-            let sortedColors = Object.keys(colorCounts).sort((a, b) => colorCounts[b] - colorCounts[a]);
-            let palette = sortedColors.slice(0, 32).map(k => {
-                let parts = k.split(',');
-                return { r: (parseInt(parts[0]) << 3), g: (parseInt(parts[1]) << 3), b: (parseInt(parts[2]) << 3) };
-            });
-            while (palette.length < 32) palette.push({ r: 0, g: 0, b: 0 });
-            return palette;
-        }
-
-        function closestColorIndex(r, g, b, palette) {
-            let minD = Infinity; let idx = 0;
-            for (let i = 0; i < 32; i++) {
-                let dr = r - palette[i].r, dg = g - palette[i].g, db = b - palette[i].b;
-                let d = dr * dr + dg * dg + db * db;
-                if (d < minD) { minD = d; idx = i; }
-            }
-            return idx;
-        }
-
-        async function processCustomIcon(fileInputId, w, h) {
-            const input = document.getElementById(fileInputId);
-            if (!input || !input.files || input.files.length === 0) return null;
-            const file = input.files[0];
-            const img = new Image();
-            img.src = URL.createObjectURL(file);
-            await new Promise(r => img.onload = r);
-
-            offCanvas.width = w; offCanvas.height = h;
-            offCtx.clearRect(0, 0, w, h);
-            offCtx.drawImage(img, 0, 0, w, h);
-            const imgData = offCtx.getImageData(0, 0, w, h);
-
-            const palette = quantizeTo32Colors(imgData);
-
-            const plttBin = new Uint8Array(64);
-            for (let i = 0; i < 32; i++) {
-                let c16 = (Math.round((palette[i].b / 255) * 31) << 10) | (Math.round((palette[i].g / 255) * 31) << 5) | Math.round((palette[i].r / 255) * 31);
-                plttBin[i * 2] = c16 & 0xFF; plttBin[i * 2 + 1] = (c16 >> 8) & 0xFF;
-            }
-
-            const imgBin = new Uint8Array(w * h);
-            for (let i = 0, p = 0; i < w * h; i++, p += 4) {
-                let alpha = Math.round((imgData.data[p + 3] / 255) * 7);
-                let idx = closestColorIndex(imgData.data[p], imgData.data[p + 1], imgData.data[p + 2], palette);
-                imgBin[i] = (alpha << 5) | idx;
-            }
-
-            return { bin: imgBin, pltt: plttBin };
-        }
-
-        document.getElementById('btnGenerate').addEventListener('click', async function () {
-            if (!cropperTop || !cropperBottom) return alert("Please upload both background images first.");
-            const btn = this; btn.innerText = "Processing Data & Audio..."; btn.disabled = true;
-            try {
-                const zip = new JSZip();
-                const themeNameInput = document.getElementById('tName').value.trim();
-                zip.file("theme.json", JSON.stringify({
-                    type: "custom", name: themeNameInput, description: document.getElementById('tDesc').value,
-                    author: document.getElementById('tAuthor').value, primaryColor: hexToRgb(document.getElementById('tColor').value),
-                    darkTheme: document.getElementById('tDark').checked
-                }, null, 4));
-
-                zip.file("topbg.bin", canvasTo15Bpp(document.getElementById('previewTopFinal')));
-                zip.file("bottombg.bin", canvasTo15Bpp(cropperBottom.getCroppedCanvas({ width: 256, height: 192 })));
-
-                let cUnsel = document.getElementById('cUnselected').value, cSel = document.getElementById('cSelected').value;
-
-                const iconsToProcess = [
-                    { id: 'imgGrid', name: 'gridcell', w: 64, h: 48, defaultHex: cUnsel },
-                    { id: 'imgGridSel', name: 'gridcellSelected', w: 64, h: 48, defaultHex: cSel },
-                    { id: 'imgBanner', name: 'bannerListCell', w: 256, h: 49, defaultHex: cUnsel },
-                    { id: 'imgBannerSel', name: 'bannerListCellSelected', w: 256, h: 49, defaultHex: cSel }
-                ];
-
-                for (let icon of iconsToProcess) {
-                    const customData = await processCustomIcon(icon.id, icon.w, icon.h);
-                    if (customData) {
-                        zip.file(`${icon.name}.bin`, customData.bin);
-                        zip.file(`${icon.name}Pltt.bin`, customData.pltt);
-                    } else {
-                        zip.file(`${icon.name}Pltt.bin`, generateCustomPalette(icon.defaultHex));
-                        try {
-                            const res = await fetch(`theme/${icon.name}.bin`);
-                            if (res.ok) zip.file(`${icon.name}.bin`, await res.arrayBuffer());
-                        } catch (e) { console.error("Missing asset in /theme folder:", icon.name); }
-                    }
-                }
-
-                // Tomar el resto de archivos (scrim estático) desde la carpeta /theme/
-                const themeAssets = ["scrim.bin", "scrimPltt.bin"];
-                for (const asset of themeAssets) {
-                    try {
-                        const res = await fetch(`theme/${asset}`);
-                        if (res.ok) zip.file(asset, await res.arrayBuffer());
-                    } catch (e) { console.error("Missing asset in /theme folder:", asset); }
-                }
-
-                // COMPRESIÓN BCSTM POR WASM (NATIVO ARRAYBUFFER MODO)
-                if (globalSoundParams && isWasmAvailable) {
-                    const startS = parseFloat(audioStart.value);
-                    const endS = parseFloat(audioEnd.value);
-                    if (endS > startS) {
-                        let params = new Uint32Array(globalSoundParams);
-                        let sampleRate = params[0];
-                        let origTotalSamples = params[1];
-                        let channels = params[5] || 2;
-
-                        let startSample = Math.floor(startS * sampleRate);
-                        let endSample = Math.floor(endS * sampleRate);
-                        let totalSamples = endSample - startSample;
-
-                        let trimmedPcm16 = null;
-                        if (globalRawPcm16) {
-                            trimmedPcm16 = new Int16Array(totalSamples * channels);
-                            for (let c = 0; c < channels; c++) {
-                                let srcOffset = (c * origTotalSamples) + startSample;
-                                let dstOffset = c * totalSamples;
-                                for (let i = 0; i < totalSamples; i++) {
-                                    trimmedPcm16[dstOffset + i] = globalRawPcm16[srcOffset + i];
-                                }
-                            }
-                        }
-
-                        params[1] = totalSamples;
-                        params[2] = 0; // [2] = Loop Flag -> 1
-                        params[3] = 0; // Loop start
-                        params[4] = totalSamples; // Loop end
-                        params[6] = channels;
-
-                        const bcstmBytes = await new Promise((resolve, reject) => {
-                            resolveEncode = resolve;
-                            rejectEncode = reject;
-                            soundWorker.postMessage({ cmd: "encode", buildType: 1, soundParams: params, pcm16: trimmedPcm16 ? trimmedPcm16.buffer : null });
-                        });
-
-                        if (bcstmBytes && bcstmBytes.length > 1024) {
-                            zip.folder("bgm").file("bgm.bcstm", bcstmBytes);
-                        } else {
-                            alert("⚠️ Audio encoder returned empty file. Skipping audio.");
-                        }
-                    }
-                }
-
-                // === GENERATE SCREENSHOTS ===
-                const screenshotCanvas = document.createElement('canvas'); // Reuse this
-                const ssCtx = screenshotCanvas.getContext('2d');
-
-                // Helper to capture current combined view (Top + Bottom + Branding Footer)
-                const captureFullLayout = async (name) => {
-                    screenshotCanvas.width = 256;
-                    screenshotCanvas.height = 192 * 2 + 42; // 384 (Screens) + 42 (Branding Footer)
-
-                    // Background
-                    ssCtx.fillStyle = "#000";
-                    ssCtx.fillRect(0, 0, 256, screenshotCanvas.height);
-
-                    // Draw screens (NO GAP)
-                    ssCtx.drawImage(document.getElementById('previewTopFinal'), 0, 0);
-                    ssCtx.drawImage(document.getElementById('previewBottomFinal'), 0, 192);
-
-                    // Footer Branding Area
-                    ssCtx.fillStyle = "#111";
-                    ssCtx.fillRect(0, 384, 256, 42);
-
-                    // Branding Text
-                    ssCtx.fillStyle = "#ffffff";
-                    ssCtx.font = "bold 11px 'Segoe UI', Arial, sans-serif";
-                    ssCtx.textAlign = "center";
-                    ssCtx.fillText("Made with Pico Theme Creator", 128, 404);
-
-                    ssCtx.fillStyle = "#ed1f69";
-                    ssCtx.font = "9px 'Segoe UI', Arial, sans-serif";
-                    ssCtx.fillText("https://github.com/santiagovalencia109/pl-Theme-Creator/", 128, 417);
-
-                    const blob = await new Promise(r => screenshotCanvas.toBlob(r, 'image/png'));
-                    zip.file(name, blob);
-                };
-
-                // Preserve current layout state to restore later
-                const originalLayout = currentPreviewLayout;
-
-                // 1. Theme Screenshot (Base Theme - No icons overlay)
-                currentPreviewLayout = 'none';
-                updateBottomPreview();
-                await captureFullLayout("themescreenshot.png");
-
-                // 2. Grid Layout Screenshot (if icons exist)
-                if (document.getElementById('previewImgGrid').style.display === 'block') {
-                    currentPreviewLayout = 'grid';
-                    updateBottomPreview();
-                    await captureFullLayout("gridscreenshot.png");
-                }
-
-                // 3. Banner Layout Screenshot (if icons exist)
-                if (document.getElementById('previewImgBanner').style.display === 'block') {
-                    currentPreviewLayout = 'banner';
-                    updateBottomPreview();
-                    await captureFullLayout("bannerscreenshot.png");
-                }
-
-                // Restore original preview state
-                currentPreviewLayout = originalLayout;
-                updateBottomPreview();
-
-                const readmeContent = `==================================================
-   Generated with Pico Launcher Theme Creator     
-==================================================
-
-App URL: https://santiagovalencia109.github.io/pl-Theme-Creator/
-GitHub Repository: https://github.com/santiagovalencia109/pl-Theme-Creator/
-
---------------------------------------------------
-[EN] HOW TO INSTALL YOUR THEME
---------------------------------------------------
-1. Prepare the Theme Folder: 
-   Extract the downloaded .zip file into a single folder. 
-   Give that folder the name you want for your theme.
-
-2. Transfer to SD Card: 
-   Connect your SD card and navigate to /_pico/themes/. 
-   Copy and paste your theme folder into this location.
-
-3. Configure settings.json:
-   Go back to the /_pico/ root folder on your SD card.
-   Open settings.json with a text editor.
-   Find the "theme" entry and change its value to match 
-   your theme folder's name (e.g., "theme": "MyTheme").
-
-4. Launch:
-   Save the file and restart Pico Launcher to enjoy!
-
---------------------------------------------------
-[ES] CÓMO INSTALAR TU TEMA
---------------------------------------------------
-1. Prepara la carpeta del tema:
-   Extrae el archivo .zip descargado en una carpeta.
-   Dale a esa carpeta el nombre que quieras para tu tema.
-
-2. Transfiere a la Tarjeta SD:
-   Conecta tu tarjeta SD y ve al directorio /_pico/themes/.
-   Copia y pega la carpeta de tu tema en esta ubicación.
-
-3. Configura settings.json:
-   Regresa a la carpeta raíz /_pico/ de tu tarjeta SD.
-   Abre settings.json con un editor de texto.
-   Busca la entrada "theme" y cambia su valor para que 
-   coincida con el nombre de tu carpeta (ej: "theme": "MiTema").
-
-4. Iniciar:
-   Guarda el archivo y reinicia el Pico Launcher para disfrutar.
-
-==================================================`;
-                zip.file("CREDITS_&_INSTALL.txt", readmeContent);
-
-                const content = await zip.generateAsync({ type: "blob" });
-                const link = document.createElement("a"); link.href = URL.createObjectURL(content);
-                link.download = (themeNameInput.replace(/[<>:"/\\|?*]+/g, '') || "PicoTheme") + ".zip";
-                link.click();
-
-                // Cleanup & Re-init Audio Encoder to prevent memory issues on consecutive runs
-                if (isWasmAvailable) {
-                    console.log("Cleaning up WASM memory...");
-                    initSoundWorker();
-                }
-            } catch (error) {
-                alert("Error generating theme: " + error);
-            } finally {
-                btn.innerText = "Generate Full Theme (.zip)"; btn.disabled = false;
-            }
-        });
-
-        /* =========================================
-           6. ADVANCED DECODER
-           ========================================= */
-        const decoderCanvas = document.getElementById('decoderCanvas');
-        const decoderCtx = decoderCanvas.getContext('2d');
-        const btnDownloadExtracted = document.getElementById('btnDownloadExtracted');
-
-        let currentDecodedFileName = 'Extracted_Texture.png';
-
-        document.getElementById('binUploader').addEventListener('change', async function (e) {
-            const files = e.target.files; if (!files.length) return;
-
-            let imgFile = null, palFile = null;
-            for (let i = 0; i < files.length; i++) {
-                if (files[i].name.toLowerCase().includes('pltt')) palFile = files[i];
-                else imgFile = files[i];
-            }
-
-            // Set global filename for download
-            const baseFile = imgFile || palFile;
-            if (baseFile) {
-                currentDecodedFileName = baseFile.name.split('.')[0] + '.png';
-            }
-
-            // If a palette is present, extract the RGB color list
-            let paletteRgb = null;
-            let numColors = 0;
-            if (palFile) {
-                const pBuf = new Uint8Array(await palFile.arrayBuffer());
-                numColors = Math.min(256, Math.floor(pBuf.length / 2));
-                paletteRgb = [];
-                for (let i = 0; i < numColors; i++) {
-                    let c16 = pBuf[i * 2] | (pBuf[i * 2 + 1] << 8);
-                    paletteRgb.push({
-                        r: Math.round(((c16 & 0x1F) / 31) * 255),
-                        g: Math.round((((c16 >> 5) & 0x1F) / 31) * 255),
-                        b: Math.round((((c16 >> 10) & 0x1F) / 31) * 255)
-                    });
-                }
-            }
-
-            // If ONLY a palette was uploaded, visualize it alone
-            if (palFile && !imgFile) {
-                let cols = Math.min(numColors, 16), rows = Math.ceil(numColors / cols) || 1, sSize = 25;
-                decoderCanvas.width = cols * sSize; decoderCanvas.height = rows * sSize;
-                decoderCtx.clearRect(0, 0, decoderCanvas.width, decoderCanvas.height);
-                for (let i = 0; i < numColors; i++) {
-                    let c = paletteRgb[i];
-                    decoderCtx.fillStyle = `rgb(${c.r},${c.g},${c.b})`;
-                    let x = (i % cols) * sSize, y = Math.floor(i / cols) * sSize;
-                    decoderCtx.fillRect(x, y, sSize, sSize); decoderCtx.strokeStyle = "rgba(0,0,0,0.4)"; decoderCtx.strokeRect(x, y, sSize, sSize);
-                }
-                document.getElementById('decoderInfo').innerText = `Detected: Palette Grid (${numColors} colors)`;
-                decoderCanvas.style.display = 'block'; btnDownloadExtracted.style.display = 'inline-block'; return;
-            }
-
-            // Decode the image if it was uploaded
-            if (imgFile) {
-                const fileName = imgFile.name.toLowerCase();
-                const buffer = new Uint8Array(await imgFile.arrayBuffer());
-                const size = buffer.length;
-                let w, h, formatName, imgData;
-
-                if (fileName.includes('topbg') || fileName.includes('bottombg')) {
-                    w = 256; h = 192; formatName = "Background (15bpp RGB)";
-                    decoderCanvas.width = w; decoderCanvas.height = h; imgData = decoderCtx.createImageData(w, h);
-                    for (let i = 0, p = 0; i < w * h * 2; i += 2, p += 4) {
-                        if (i < size - 1) {
-                            let c16 = buffer[i] | (buffer[i + 1] << 8);
-                            imgData.data[p] = Math.round(((c16 & 0x1F) / 31) * 255); imgData.data[p + 1] = Math.round((((c16 >> 5) & 0x1F) / 31) * 255);
-                            imgData.data[p + 2] = Math.round((((c16 >> 10) & 0x1F) / 31) * 255); imgData.data[p + 3] = 255;
-                        }
-                    }
-                } else if (fileName.includes('bannerlistcell') || fileName.includes('gridcell')) {
-                    w = fileName.includes('banner') ? 256 : 64; h = fileName.includes('banner') ? 49 : 48; formatName = "Graphics (A3I5)";
-                    decoderCanvas.width = w; decoderCanvas.height = h; imgData = decoderCtx.createImageData(w, h);
-                    for (let i = 0, p = 0; i < w * h; i++, p += 4) {
-                        if (i < size) {
-                            let alpha = Math.round((((buffer[i] >> 5) & 0x7) / 7) * 255);
-                            let index = buffer[i] & 0x1F;
-                            if (paletteRgb && paletteRgb[index]) {
-                                imgData.data[p] = paletteRgb[index].r; imgData.data[p + 1] = paletteRgb[index].g; imgData.data[p + 2] = paletteRgb[index].b;
-                            } else {
-                                imgData.data[p] = imgData.data[p + 1] = imgData.data[p + 2] = 255;
-                            }
-                            imgData.data[p + 3] = alpha;
-                        }
-                    }
-                } else if (fileName.includes('scrim')) {
-                    w = 8; h = 42; formatName = "Shadow (A5I3)";
-                    decoderCanvas.width = w; decoderCanvas.height = h; imgData = decoderCtx.createImageData(w, h);
-                    for (let i = 0, p = 0; i < w * h; i++, p += 4) {
-                        if (i < size) {
-                            let alpha = Math.round((((buffer[i] >> 3) & 0x1F) / 31) * 255);
-                            let index = buffer[i] & 0x07;
-                            if (paletteRgb && paletteRgb[index]) {
-                                imgData.data[p] = paletteRgb[index].r; imgData.data[p + 1] = paletteRgb[index].g; imgData.data[p + 2] = paletteRgb[index].b;
-                            } else {
-                                imgData.data[p] = imgData.data[p + 1] = imgData.data[p + 2] = 0;
-                            }
-                            imgData.data[p + 3] = alpha;
-                        }
-                    }
-                } else return alert("File format not recognized.");
-
-                decoderCtx.putImageData(imgData, 0, 0);
-                let pInfo = paletteRgb ? " + Palette applied" : " (No palette, pure mask)";
-                if (fileName.includes('topbg') || fileName.includes('bottombg')) pInfo = "";
-                document.getElementById('decoderInfo').innerText = `Detected: ${formatName}${pInfo} | Dimensions: ${w}x${h}px`;
-                decoderCanvas.style.display = 'block'; btnDownloadExtracted.style.display = 'inline-block';
-            }
-        });
-
-        btnDownloadExtracted.addEventListener('click', () => {
-            const link = document.createElement('a');
-            link.download = currentDecodedFileName;
-            link.href = decoderCanvas.toDataURL('image/png');
-            link.click();
-        });
-
-        function updateLayoutButtonsState() {
-            const btnGrid = document.getElementById('btnPreviewGridLayout');
-            const pGridNorm = document.getElementById('previewImgGrid');
-            const pGridSel = document.getElementById('previewImgGridSel');
-            if (pGridNorm.style.display === 'block' && pGridSel.style.display === 'block') {
-                btnGrid.disabled = false;
-                btnGrid.style.opacity = '1';
-                btnGrid.innerText = 'Preview Grid on Bottom Screen';
-            } else {
-                btnGrid.disabled = true;
-                btnGrid.style.opacity = '0.5';
-                btnGrid.innerText = 'Upload Both Grid Icons';
-                if (currentPreviewLayout === 'grid') {
-                    currentPreviewLayout = 'none';
-                    document.getElementById('btnClearLayout').style.display = 'none';
-                    updateBottomPreview();
-                }
-            }
-
-            const btnBanner = document.getElementById('btnPreviewBannerLayout');
-            const pBannerNorm = document.getElementById('previewImgBanner');
-            const pBannerSel = document.getElementById('previewImgBannerSel');
-            if (pBannerNorm.style.display === 'block' && pBannerSel.style.display === 'block') {
-                btnBanner.disabled = false;
-                btnBanner.style.opacity = '1';
-                btnBanner.innerText = 'Preview Banner on Bottom Screen';
-            } else {
-                btnBanner.disabled = true;
-                btnBanner.style.opacity = '0.5';
-                btnBanner.innerText = 'Upload Both Banner Icons';
-                if (currentPreviewLayout === 'banner') {
-                    currentPreviewLayout = 'none';
-                    document.getElementById('btnClearLayout').style.display = 'none';
-                    updateBottomPreview();
-                }
-            }
-        }
-
-        ['imgGrid', 'imgGridSel', 'imgBanner', 'imgBannerSel'].forEach(id => {
-            document.getElementById(id).addEventListener('change', function (e) {
-                const file = e.target.files[0];
-                const preview = document.getElementById('previewImg' + id.substring(3));
-                const expectedW = id.includes('Grid') ? 64 : 256;
-                const expectedH = id.includes('Grid') ? 48 : 49;
-
-                if (file) {
-                    const img = new Image();
-                    const objectUrl = URL.createObjectURL(file);
-                    img.onload = function () {
-                        if (img.width !== expectedW || img.height !== expectedH) {
-                            alert(`Error: The image must be exactly ${expectedW}x${expectedH} pixels. This image is ${img.width}x${img.height}.`);
-                            e.target.value = ''; // clear input
-                            preview.src = '';
-                            preview.style.display = 'none';
-                        } else {
-                            preview.src = objectUrl;
-                            preview.style.display = 'block';
-                        }
-                        updateLayoutButtonsState();
-                    };
-                    img.src = objectUrl;
-                } else {
-                    preview.src = '';
-                    preview.style.display = 'none';
-                    updateLayoutButtonsState();
-                }
-            });
-        });
-
-        document.getElementById('btnPreviewGridLayout').addEventListener('click', () => {
-            currentPreviewLayout = 'grid';
-            document.getElementById('btnClearLayout').style.display = 'inline-block';
-            updateBottomPreview();
-        });
-
-        document.getElementById('btnPreviewBannerLayout').addEventListener('click', () => {
-            currentPreviewLayout = 'banner';
-            document.getElementById('btnClearLayout').style.display = 'inline-block';
-            updateBottomPreview();
-        });
-
-        document.getElementById('btnClearLayout').addEventListener('click', () => {
-            currentPreviewLayout = 'none';
-            document.getElementById('btnClearLayout').style.display = 'none';
-            updateBottomPreview();
-        });
-
-        // Fetch latest commit hash from GitHub API
-        async function fetchLastCommit() {
-            try {
-                const response = await fetch('https://api.github.com/repos/santiagovalencia109/pl-Theme-Creator/commits/main');
-                if (response.ok) {
-                    const data = await response.json();
-                    document.getElementById('commit-hash').innerText = data.sha.substring(0, 7);
-                }
-            } catch (e) { /* Silently fail if API rate limit or offline */ }
-        }
-        fetchLastCommit();
-
-        /* =========================================
-           7. DRAG AND DROP FUNCTIONALITY
-           ========================================= */
-        document.querySelectorAll('.upload-box, .upload-item, input[type="file"]').forEach(zone => {
-            zone.addEventListener('dragover', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                if (zone.classList.contains('upload-item')) {
-                    zone.style.background = 'rgba(237, 31, 105, 0.2)';
-                    zone.style.borderRadius = '8px';
-                } else {
-                    zone.style.borderColor = '#ed1f69';
-                    zone.style.background = '#32223b';
-                }
-            });
-            zone.addEventListener('dragleave', (e) => {
-                e.stopPropagation();
-                zone.style.borderColor = '';
-                zone.style.background = '';
-            });
-            zone.addEventListener('drop', (e) => {
-                e.preventDefault();
-                e.stopPropagation();
-                zone.style.borderColor = '';
-                zone.style.background = '';
-
-                const files = e.dataTransfer.files;
-                if (files.length > 0) {
-                    let targetInput = (zone.tagName === 'INPUT' && zone.type === 'file') ? zone : zone.querySelector('input[type="file"]');
-
-                    if (targetInput) {
-                        const dt = new DataTransfer();
-                        for (let i = 0; i < files.length; i++) {
-                            dt.items.add(files[i]);
-                            // If input is NOT 'multiple', only process the first file
-                            if (!targetInput.multiple) break;
-                        }
-                        targetInput.files = dt.files;
-                        targetInput.dispatchEvent(new Event('change'));
-                    }
-                }
-            });
-        });
     </script>
     <footer style="text-align: center; padding: 40px 0; color: #aaa; font-size: 0.9em; line-height: 1.6;">
         <p style="margin: 0; color: #a9b4c2;">Made with <span style="color: #ff2a5f;">❤️</span> for the Retro Gaming

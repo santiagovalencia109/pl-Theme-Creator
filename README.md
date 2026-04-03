@@ -10,10 +10,12 @@ A powerful, entirely browser-based tool to create, edit, and extract custom them
 
 ### 🛠️ 1. Ultimate Theme Creator
 Create a complete, ready-to-use theme `.zip` package in seconds:
-- **General Settings**: Customize your theme's name, author, description, and base UI colors (MD3 Base, Menu Selected/Unselected).
-- **Dark Mode Support**: Easily toggle the Dark Mode metadata flag.
+- **Multi-Version Compatibility**: Switch between **Legacy** and **v1.2.0+ (Latest)** modes. The UI intelligently adapts, disabling advanced positioning fields when they aren't supported by the launcher version.
 - **Advanced Image Cropping**: Upload your wallpapers and crop them specifically to the exact 256x192 resolution required by dual-screen hardware.
-- **Custom Menu Icons**: Upload your own PNG icons for Grid and Banner views. Downloadable layout templates are included to help you design your assets in Photoshop or GIMP.
+- **Smart Layout Guides**: Independent **Top** and **Bottom** guide overlays with high-fidelity text preview (stroke-based effects) and dashed bounding boxes to visualize element widths. Guides automatically hide when custom icon layouts are active to avoid clutter.
+- **Custom Menu Icons**: Upload your own PNG icons for Grid and Banner views. Downloadable layout templates are included to help you design your assets.
+- **Integrated Theme Library**: Browse and download community themes directly from the **GBAtemp Library** tab, powered by a Supabase backend.
+- **Interactive Drag & Resize**: Click and drag any element on the **Top Screen Preview** to move it. You can also resize text fields (Title, Description, Filename) by dragging their right edges directly on the console screen (available in v1.2.0+ mode).
 - **Live Preview**: See how your theme looks on a real Nintendo DS frame, including translucent box settings and custom icons.
 - **Auto-Conversion**: The tool automatically processes your images and colors into the precise bit-depths and formats required (`15bpp`, `A3I5`, `A5I3`, `.pltt`).
 
