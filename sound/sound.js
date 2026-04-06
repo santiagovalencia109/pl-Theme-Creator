@@ -73,6 +73,12 @@ self.addEventListener('message', (message) => {
             break;
         case "encode":
             console.log(message.data.soundParams);
+            if(message.data.pcm16){
+                if(rawPcmPtr) Module._my_free(rawPcmPtr);
+                var pcmBuf = new Uint8Array(message.data.pcm16);
+                rawPcmPtr = Module._my_malloc(pcmBuf.length);
+                Module.HEAP8.set(pcmBuf, rawPcmPtr);
+            }
             Module.HEAP32.set(message.data.soundParams, soundParamsPtr / 4);
             var dest;
             try{
@@ -92,11 +98,14 @@ self.addEventListener('message', (message) => {
                         dest =  Module._encodeBfstm(rawPcmPtr, false, true, 0x30000);
                         break;
                 }
-            }catch{
+            }catch(e){
+                console.error("WASM encode error:", e);
                 Module._my_free(rawPcmPtr);
+                rawPcmPtr = 0;
                 self.postMessage({
                     cmd: "encode_result",
-                    result: null
+                    result: null,
+                    error: e.toString()
                 });
                 return;
             }
