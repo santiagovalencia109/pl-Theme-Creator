@@ -7,10 +7,12 @@ function switchTab(tabId) {
     document.getElementById(tabId).classList.add('active');
     event.currentTarget.classList.add('active');
 
-    // Fetch library if tab opened and not already loaded
+    // Library is now an iframe, no need to fetch from Supabase
+    /*
     if (tabId === 'tabLibrary' && !libraryLoaded) {
         fetchThemes();
     }
+    */
 }
 
 function switchNestedTab(tabId) {
@@ -66,10 +68,18 @@ function loadThemeFromFile(event) {
             };
 
             // Detect Version Compatibility
-            if (data.topIcon || data.topBannerTextLine0) {
-                document.getElementById('tVersion').value = 'latest';
+            if (data.topCover) {
+                document.getElementById('tVersion').value = 'v1.3.0';
+            } else if (data.topIcon || data.topBannerTextLine0) {
+                document.getElementById('tVersion').value = 'v1.2.0';
             } else {
                 document.getElementById('tVersion').value = 'legacy';
+            }
+
+            // Top Cover (v1.3.0+)
+            if (data.topCover && data.topCover.position) {
+                setValue('ttcX', data.topCover.position.x);
+                setValue('ttcY', data.topCover.position.y);
             }
 
             // Basic Info
@@ -147,7 +157,9 @@ function loadThemeFromFile(event) {
 }
 
 function updateLayoutControlsVisibility() {
-    const isLegacy = document.getElementById('tVersion').value === 'legacy';
+    const version = document.getElementById('tVersion').value;
+    const isLegacy = version === 'legacy';
+    const isV130 = version === 'v1.3.0';
     const container = document.getElementById('ntPositioning');
     if (!container) return;
 
@@ -156,6 +168,15 @@ function updateLayoutControlsVisibility() {
     inputs.forEach(input => {
         // Skip the guide checkboxes
         if (input.id === 'showGuidesTop' || input.id === 'showGuidesBottom') return;
+
+        // Specific handling for Top Cover (only v1.3.0)
+        if (input.id === 'ttcX' || input.id === 'ttcY') {
+            const parent = input.closest('.overlay-controls');
+            if (parent) {
+                parent.style.display = isV130 ? 'block' : 'none';
+            }
+            return;
+        }
 
         input.disabled = isLegacy;
         // Handle visual dimming
@@ -362,10 +383,18 @@ function updateTopPreview() {
     if (window.isExporting || !document.getElementById('showGuidesTop').checked) return;
 
     const drawIndicator = (x, y, w, h, bc, tc, label) => {
-        if (label === "ICON") {
-            ctx.fillStyle = bc; ctx.globalAlpha = 0.6;
+        if (label === "ICON" || label === "COVER") {
+            ctx.fillStyle = bc; 
+            ctx.globalAlpha = (label === "COVER") ? 0.2 : 0.6;
             ctx.fillRect(x, y, w, h);
             ctx.globalAlpha = 1.0;
+
+            if (label === "COVER") {
+                ctx.strokeStyle = bc;
+                ctx.lineWidth = 1;
+                ctx.strokeRect(x, y, w, h);
+            }
+
             ctx.fillStyle = "#ffffff"; ctx.font = "bold 9px Arial";
             ctx.fillText(label, x + 2, y + 9);
         } else {
@@ -386,6 +415,17 @@ function updateTopPreview() {
             ctx.fillText(label, x + 2, y + 9);
         }
     };
+
+    // 0. Top Cover (v1.3.0+)
+    if (document.getElementById('tVersion').value === 'v1.3.0') {
+        drawIndicator(
+            parseInt(document.getElementById('ttcX').value),
+            parseInt(document.getElementById('ttcY').value),
+            100, 95,
+            "#ed1f69",
+            "#ffffff", "COVER"
+        );
+    }
 
     // 1. Top Icon
     drawIndicator(
@@ -416,6 +456,7 @@ function updateTopPreview() {
     });
 } [
     'boxEnable', 'boxColor', 'boxBorderColor', 'boxOpacity', 'boxRadius',
+    'ttcX', 'ttcY',
     'tiX', 'tiY', 'tiBC',
     'tbt0X', 'tbt0Y', 'tbt0W', 'tbt0TC', 'tbt0BC',
     'tbt1X', 'tbt1Y', 'tbt1W', 'tbt1TC', 'tbt1BC',
@@ -602,7 +643,8 @@ document.getElementById('btnDownloadAudioOnly').addEventListener('click', async 
                     if (i < fadeS) val = Math.round(val * (i / fadeS));
                     else if (i > totalSamples - fadeS) val = Math.round(val * ((totalSamples - i) / fadeS));
 
-                    trimmedPcm16[i] = val;
+                    trimmedPcm16[i] = val;                    // Left
+                    trimmedPcm16[totalSamples + i] = val;     // Right
                 }
 
                 params[1] = totalSamples;
@@ -615,7 +657,16 @@ document.getElementById('btnDownloadAudioOnly').addEventListener('click', async 
             const bcstmBytes = await new Promise((resolve, reject) => {
                 resolveEncode = resolve;
                 rejectEncode = reject;
-                soundWorker.postMessage({ cmd: "encode", buildType: 1, soundParams: params, pcm16: trimmedPcm16 ? trimmedPcm16.buffer : null });
+                //soundWorker.postMessage({ cmd: "encode", buildType: 1, soundParams: params, pcm16: trimmedPcm16 ? trimmedPcm16.buffer : null });
+                soundWorker.postMessage(
+                    {
+                        cmd: "encode",
+                        buildType: 1,
+                        soundParams: params,
+                        pcm16: trimmedPcm16.buffer
+                    },
+                    [trimmedPcm16.buffer]
+                );
             });
 
             if (bcstmBytes && bcstmBytes.length > 1024) {
@@ -749,7 +800,7 @@ document.getElementById('btnGenerate').addEventListener('click', async function 
             primaryColor: hexToRgb(document.getElementById('tColor').value),
             darkTheme: document.getElementById('tDark').checked
         };
-        if (themeVersion === "latest") {
+        if (themeVersion === "v1.2.0" || themeVersion === "v1.3.0") {
             themeJson = {
                 ...themeJson,
                 topIcon: {
@@ -796,6 +847,15 @@ document.getElementById('btnGenerate').addEventListener('click', async function 
                     textColor: hexToRgb(document.getElementById('blt2TC').value)
                 }
             };
+
+            if (themeVersion === "v1.3.0") {
+                themeJson.topCover = {
+                    position: {
+                        x: parseInt(document.getElementById('ttcX').value),
+                        y: parseInt(document.getElementById('ttcY').value)
+                    }
+                };
+            }
         }
         zip.file("theme.json", JSON.stringify(themeJson, null, 4));
 
@@ -1296,11 +1356,13 @@ const topCanvas = document.getElementById('previewTopFinal');
 let isDragging = false, isResizing = false;
 let targetObj = null, startX, startY, startW, startValX, startValY;
 topCanvas.addEventListener('mousedown', e => {
-    if (document.getElementById('tVersion').value !== 'latest') return;
+    const version = document.getElementById('tVersion').value;
+    if (version === 'legacy') return;
     const rect = topCanvas.getBoundingClientRect();
     const x = (e.clientX - rect.left) * (256 / rect.width);
     const y = (e.clientY - rect.top) * (192 / rect.height);
     const items = [
+        { id: 'ttc', x: 'ttcX', y: 'ttcY', w: 100, h: 95, canResize: false, version: 'v1.3.0' },
         { id: 'ti', x: 'tiX', y: 'tiY', w: 32, h: 32, canResize: false },
         { id: 'tbt0', x: 'tbt0X', y: 'tbt0Y', w: 'tbt0W', h: 12, canResize: true },
         { id: 'tbt1', x: 'tbt1X', y: 'tbt1Y', w: 'tbt1W', h: 12, canResize: true },
@@ -1308,6 +1370,7 @@ topCanvas.addEventListener('mousedown', e => {
         { id: 'tfn', x: 'tfnX', y: 'tfnY', w: 'tfnW', h: 12, canResize: true }
     ];
     for (const item of items) {
+        if (item.version && version !== item.version) continue;
         const ix = parseInt(document.getElementById(item.x).value);
         const iy = parseInt(document.getElementById(item.y).value);
         const iw = (typeof item.w === 'string') ? parseInt(document.getElementById(item.w).value) : item.w;
@@ -1320,7 +1383,8 @@ topCanvas.addEventListener('mousedown', e => {
     }
 });
 window.addEventListener('mousemove', e => {
-    if (document.getElementById('tVersion').value !== 'latest') {
+    const version = document.getElementById('tVersion').value;
+    if (version === 'legacy') {
         topCanvas.style.cursor = 'default';
         return;
     }
@@ -1329,6 +1393,7 @@ window.addEventListener('mousemove', e => {
         const x = (e.clientX - rect.left) * (256 / rect.width);
         const y = (e.clientY - rect.top) * (192 / rect.height);
         const items = [
+            { id: 'ttc', x: 'ttcX', y: 'ttcY', w: 100, h: 95, version: 'v1.3.0' },
             { id: 'ti', x: 'tiX', y: 'tiY', w: 32, h: 32 },
             { id: 'tbt0', x: 'tbt0X', y: 'tbt0Y', w: 'tbt0W', h: 12 },
             { id: 'tbt1', x: 'tbt1X', y: 'tbt1Y', w: 'tbt1W', h: 12 },
@@ -1337,9 +1402,10 @@ window.addEventListener('mousemove', e => {
         ];
         let hovering = false;
         for (const i of items) {
+            if (i.version && version !== i.version) continue;
             const ix = parseInt(document.getElementById(i.x).value), iy = parseInt(document.getElementById(i.y).value), iw = (typeof i.w === 'string') ? parseInt(document.getElementById(i.w).value) : i.w;
-            if (x >= ix && x <= ix + iw && y >= iy && y <= iy + 12) {
-                topCanvas.style.cursor = (x > (ix + iw - 10) && i.id !== 'ti') ? 'ew-resize' : 'grab';
+            if (x >= ix && x <= ix + iw && y >= iy && y <= iy + i.h) {
+                topCanvas.style.cursor = (x > (ix + iw - 10) && i.id !== 'ti' && i.id !== 'ttc') ? 'ew-resize' : 'pointer';
                 hovering = true; break;
             }
         }
